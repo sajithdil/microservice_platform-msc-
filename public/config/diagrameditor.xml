@@ -38,6 +38,55 @@
 				</mxCell>
 			</Rect>
 		</add>
+		<add as="begin">
+			<Begin label="Begin" href="">
+				<mxCell vertex="1">	
+					<mxGeometry as="geometry" width="80" height="40"/>
+				</mxCell>
+			</Begin>
+		</add>
+		<add as="end">
+			<End label="End" href="">
+				<mxCell vertex="1">	
+					<mxGeometry as="geometry" width="80" height="40"/>
+				</mxCell>
+			</End>
+		</add>
+		<add as="script">
+			<Script label="Script" href="">
+				<mxCell vertex="1">	
+					<mxGeometry as="geometry" width="80" height="40"/>
+				</mxCell>
+			</Script>
+		</add>
+		<add as="decision">
+			<Decision label="Decision" href="">
+				<mxCell vertex="1">	
+					<mxGeometry as="geometry" width="80" height="40"/>
+				</mxCell>
+			</Decision>
+		</add>
+		<add as="switch">
+			<Switch label="Switch" href="">
+				<mxCell vertex="1">	
+					<mxGeometry as="geometry" width="80" height="40"/>
+				</mxCell>
+			</Switch>
+		</add>
+		<add as="rest">
+			<REST label="REST" href="">
+				<mxCell vertex="1">	
+					<mxGeometry as="geometry" width="80" height="40"/>
+				</mxCell>
+			</REST>
+		</add>
+		<add as="database">
+			<Database label="Database" href="">
+				<mxCell vertex="1">	
+					<mxGeometry as="geometry" width="80" height="40"/>
+				</mxCell>
+			</Database>
+		</add>
 		<add as="text">
 			<Text label="Text Here" href="">
 				<mxCell vertex="1" style="text">	
@@ -316,18 +365,13 @@
 		]]></add>
 		<br/><br/>
 		<add as="Text" template="text" icon="/node_modules/mxgraph/javascript/examples/editors/images/text.gif"/>
-		<add as="Container" template="container" icon="/node_modules/mxgraph/javascript/examples/editors/images/swimlane.gif"/>
-		<add as="Rectangle" template="rectangle" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>
-		<add as="Rounded" template="rounded" icon="/node_modules/mxgraph/javascript/examples/editors/images/rounded.gif"/>
-		<add as="Ellipse" template="shape" style="ellipse" icon="/node_modules/mxgraph/javascript/examples/editors/images/ellipse.gif"/>
-		<add as="Double Ellipse" template="shape" style="doubleEllipse" icon="/node_modules/mxgraph/javascript/examples/editors/images/doubleellipse.gif"/>
-		<add as="Rhombus" template="shape" style="rhombus" icon="/node_modules/mxgraph/javascript/examples/editors/images/rhombus.gif"/>
-		<add as="Triangle" template="actor" style="triangle" icon="/node_modules/mxgraph/javascript/examples/editors/images/triangle.gif"/>
-		<add as="Hexagon" template="cloud" style="hexagon" icon="/node_modules/mxgraph/javascript/examples/editors/images/hexagon.gif"/>
-		<add as="Actor" template="actor" style="actor" icon="/node_modules/mxgraph/javascript/examples/editors/images/actor.gif"/>
-		<add as="Cylinder" template="shape" style="cylinder" icon="/node_modules/mxgraph/javascript/examples/editors/images/cylinder.gif"/>
-		<add as="Cloud" template="cloud" style="cloud" icon="/node_modules/mxgraph/javascript/examples/editors/images/cloud.gif"/>
-		<add as="Line" template="hline" style="hline" icon="/node_modules/mxgraph/javascript/examples/editors/images/hline.gif"/>
-		<add as="Image" template="image" icon="/node_modules/mxgraph/javascript/examples/editors/images/image.gif"/>
+		<add as="Begin" template="begin" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>
+		<add as="End" template="end" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>
+		<add as="Script" template="script" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>
+		<add as="Decision" template="decision" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>
+		<add as="Switch" template="switch" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>
+		<add as="REST" template="rest" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>
+		<add as="Database" template="database" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>
+	
 	</mxDefaultToolbar>
 </mxEditor>
