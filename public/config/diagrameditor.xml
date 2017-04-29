@@ -345,24 +345,24 @@
 				}
 			}
 		]]></add>
-		<add as="connect" mode="connect" icon="/node_modules/mxgraph/javascript/examples/editors/images/straight.gif"><![CDATA[
-			function (editor)
-			{
-				if (editor.defaultEdge != null)
-				{
-					editor.defaultEdge.style = 'straightConnector';
-				}
-			}
-		]]></add>
-		<add as="connect" mode="connect" icon="/node_modules/mxgraph/javascript/examples/editors/images/arrow.gif"><![CDATA[
-			function (editor)
-			{
-				if (editor.defaultEdge != null)
-				{
-					editor.defaultEdge.style = 'arrowConnector';
-				}
-			}
-		]]></add>
+		<!--<add as="connect" mode="connect" icon="/node_modules/mxgraph/javascript/examples/editors/images/straight.gif"><![CDATA[-->
+		<!--	function (editor)-->
+		<!--	{-->
+		<!--		if (editor.defaultEdge != null)-->
+		<!--		{-->
+		<!--			editor.defaultEdge.style = 'straightConnector';-->
+		<!--		}-->
+		<!--	}-->
+		<!--]]></add>-->
+		<!--<add as="connect" mode="connect" icon="/node_modules/mxgraph/javascript/examples/editors/images/arrow.gif"><![CDATA[-->
+		<!--	function (editor)-->
+		<!--	{-->
+		<!--		if (editor.defaultEdge != null)-->
+		<!--		{-->
+		<!--			editor.defaultEdge.style = 'arrowConnector';-->
+		<!--		}-->
+		<!--	}-->
+		<!--]]></add>-->
 		<br/><br/>
 		<add as="Text" template="text" icon="/node_modules/mxgraph/javascript/examples/editors/images/text.gif"/>
 		<add as="Begin" template="begin" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>

@@ -9,46 +9,59 @@
 		<separator/>
 		<add as="delete" action="delete" icon="/node_modules/mxgraph/javascript/examples/editors/images/delete.gif" if="cell"/>
 		<separator/>
-		<add as="exitGroup" action="exitGroup" icon="/node_modules/mxgraph/javascript/examples/editors/images/up.gif" if="notRoot"/>
-		<add as="enterGroup" action="enterGroup" icon="/node_modules/mxgraph/javascript/examples/editors/images/down.gif" if="validRoot"/>
-		<separator/>
-		<add as="shape" if="cell">
-			<add as="group" action="group" icon="/node_modules/mxgraph/javascript/examples/editors/images/group.gif" if="ncells"/>
-			<add as="ungroup" action="ungroup" icon="/node_modules/mxgraph/javascript/examples/editors/images/ungroup.gif" if="cell"/>
-			<separator/>
-			<add as="removeFromParent" action="removeFromParent" if="cell"/>
-			<separator/>
-			<add as="collapse" action="collapse" icon="/node_modules/mxgraph/javascript/examples/editors/images/collapse.gif" if="expandable"/>
-			<add as="expand" action="expand" icon="/node_modules/mxgraph/javascript/examples/editors/images/expand.gif" if="collapsable"/>
-			<separator/>
-			<add as="toFront" action="toFront" icon="/node_modules/mxgraph/javascript/examples/editors/images/tofront.gif" if="cell"/>
-			<add as="toBack" action="toBack" icon="/node_modules/mxgraph/javascript/examples/editors/images/toback.gif" if="cell"/>
-			<separator/>
-			<add as="editStyle" action="editStyle" if="cell"/>
-		</add>
-		<add as="format" if="cell">
-			<add as="fillColor" action="fillColor" icon="/node_modules/mxgraph/javascript/examples/editors/images/fillcolor.gif" if="cell"/>
-			<add as="gradientColor" action="gradientColor" if="cell"/>
-			<add as="strokeColor" action="strokeColor" icon="/node_modules/mxgraph/javascript/examples/editors/images/linecolor.gif" if="cell"/>
-			<separator/>
-			<add as="toggleRounded" action="toggleRounded" if="cell"/>
-			<add as="toggleShadow" action="toggleShadow" if="cell"/>
-		</add>
-		<add as="font" if="cell">
-			<add as="fontColor" action="fontColor" icon="/node_modules/mxgraph/javascript/examples/editors/images/fontcolor.gif" if="cell"/>
-			<add as="fontFamily" action="fontFamily" if="cell"/>
-			<add as="fontSize" action="fontSize" if="cell"/>
-			<separator/>
-			<add as="bold" action="bold" icon="/node_modules/mxgraph/javascript/examples/editors/images/bold.gif" if="cell"/>
-			<add as="italic" action="italic" icon="/node_modules/mxgraph/javascript/examples/editors/images/italic.gif" if="cell"/>
-		</add>
-		<separator/>
-		<add as="properties" action="showProperties" icon="/node_modules/mxgraph/javascript/examples/editors/images/properties.gif"/>
-		<separator/>
-		<add as="openHref" action="openHref" icon="/node_modules/mxgraph/javascript/examples/editors/images/link.gif"/>
+		<add as="microserviceProperties" action="setProperties" icon="/node_modules/mxgraph/javascript/examples/editors/images/delete.gif" if="cell"/>
+		
+		<!--<add as="exitGroup" action="exitGroup" icon="/node_modules/mxgraph/javascript/examples/editors/images/up.gif" if="notRoot"/>-->
+		<!--<add as="enterGroup" action="enterGroup" icon="/node_modules/mxgraph/javascript/examples/editors/images/down.gif" if="validRoot"/>-->
+		<!--<separator/>-->
+		<!--<add as="shape" if="cell">-->
+		<!--	<add as="group" action="group" icon="/node_modules/mxgraph/javascript/examples/editors/images/group.gif" if="ncells"/>-->
+		<!--	<add as="ungroup" action="ungroup" icon="/node_modules/mxgraph/javascript/examples/editors/images/ungroup.gif" if="cell"/>-->
+		<!--	<separator/>-->
+		<!--	<add as="removeFromParent" action="removeFromParent" if="cell"/>-->
+		<!--	<separator/>-->
+		<!--	<add as="collapse" action="collapse" icon="/node_modules/mxgraph/javascript/examples/editors/images/collapse.gif" if="expandable"/>-->
+		<!--	<add as="expand" action="expand" icon="/node_modules/mxgraph/javascript/examples/editors/images/expand.gif" if="collapsable"/>-->
+		<!--	<separator/>-->
+		<!--	<add as="toFront" action="toFront" icon="/node_modules/mxgraph/javascript/examples/editors/images/tofront.gif" if="cell"/>-->
+		<!--	<add as="toBack" action="toBack" icon="/node_modules/mxgraph/javascript/examples/editors/images/toback.gif" if="cell"/>-->
+		<!--	<separator/>-->
+		<!--	<add as="editStyle" action="editStyle" if="cell"/>-->
+		<!--</add>-->
+		<!--<add as="format" if="cell">-->
+		<!--	<add as="fillColor" action="fillColor" icon="/node_modules/mxgraph/javascript/examples/editors/images/fillcolor.gif" if="cell"/>-->
+		<!--	<add as="gradientColor" action="gradientColor" if="cell"/>-->
+		<!--	<add as="strokeColor" action="strokeColor" icon="/node_modules/mxgraph/javascript/examples/editors/images/linecolor.gif" if="cell"/>-->
+		<!--	<separator/>-->
+		<!--	<add as="toggleRounded" action="toggleRounded" if="cell"/>-->
+		<!--	<add as="toggleShadow" action="toggleShadow" if="cell"/>-->
+		<!--</add>-->
+		<!--<add as="font" if="cell">-->
+		<!--	<add as="fontColor" action="fontColor" icon="/node_modules/mxgraph/javascript/examples/editors/images/fontcolor.gif" if="cell"/>-->
+		<!--	<add as="fontFamily" action="fontFamily" if="cell"/>-->
+		<!--	<add as="fontSize" action="fontSize" if="cell"/>-->
+		<!--	<separator/>-->
+		<!--	<add as="bold" action="bold" icon="/node_modules/mxgraph/javascript/examples/editors/images/bold.gif" if="cell"/>-->
+		<!--	<add as="italic" action="italic" icon="/node_modules/mxgraph/javascript/examples/editors/images/italic.gif" if="cell"/>-->
+		<!--</add>-->
+		<!--<separator/>-->
+		<!--<add as="properties" action="showProperties" icon="/node_modules/mxgraph/javascript/examples/editors/images/properties.gif"/>-->
+		<!--<separator/>-->
+		<!--<add as="openHref" action="openHref" icon="/node_modules/mxgraph/javascript/examples/editors/images/link.gif"/>-->
 	</mxDefaultPopupMenu>
 	<include name="config/keyhandler-commons.xml"/>
 	<Array as="actions">
+		<add as="setProperties">
+			<![CDATA[	
+			function(editor, cell)
+			{
+				console.log("hit setProperties in xml");
+				var scope = angular.element("#propPanel").scope();
+				console.log(scope);
+				scope.showPropertiesPanel(editor,cell);
+			}
+			]]>
+		</add>
 		<add as="open"><![CDATA[
 			function (editor)
 			{

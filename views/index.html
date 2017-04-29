@@ -98,7 +98,7 @@
 		</div>
   <div class="row">
    
-    <div class="col-sm-12">
+    <div class="col-sm-8">
       <table border="0" width="730px">
 			<tr>
 				<td id="toolbar"  valign="top">
@@ -115,6 +115,15 @@
 				</td>
 			</tr>
 		</table>
+    </div>
+    <div class="col-sm-4">
+        <table id="propPanel" ng-show="showPropPanel" class="ng-hide">
+            <tr>
+                <td>Microservice Properties</td>
+            </tr>
+            <ng-include src="template"></ng-include>
+        </table>
+        
     </div>
     
   </div>
@@ -146,3 +155,11 @@
 </div>
     </body>
 </html>
+
+<script  type="text/ng-template" id="beginTemplate">
+    <tr>
+        <td>
+            begin variables
+        </td>
+    </tr>
+</script>
