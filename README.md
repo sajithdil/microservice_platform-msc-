@@ -15,3 +15,9 @@ mxEditor has both graph and toolbar in it
 https://jgraph.github.io/mxgraph/javascript/examples/dynamictoolbar.html
 
 shows how to dynamically add a toolbar item
+
+
+----------------------------------------------------
+mongodb
+https://community.c9.io/t/setting-up-mongodb/1717/34
+http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/

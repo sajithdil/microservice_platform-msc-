@@ -14,9 +14,14 @@
     "debug": "~2.6.0",
     "express": "~4.14.1",
     "jquery": "^3.2.1",
+    "mongodb": "^2.2.26",
+    "monk": "^4.0.0",
     "morgan": "~1.7.0",
     "mxgraph": "^3.7.1",
     "pug": "~2.0.0-beta10",
     "serve-favicon": "~2.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }

@@ -8,6 +8,9 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 
+var mongo = require('mongodb');
+var monk = require('monk');
+
 var app = express();
 
 // view engine setup
@@ -26,6 +29,14 @@ app.use(express.static(__dirname + '/views'));
 //Store all HTML files in view folder.
 app.use(express.static(__dirname + '/'));
 //Store all JS and CSS in base folder.
+
+var db = monk('localhost:27017/msplatform');
+
+// Make our db accessible to our router
+app.use(function(req,res,next){
+    req.db = db;
+    next();
+});
 
 app.use('/', index);
 app.use('/users', users);
@@ -47,5 +58,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
+
 
 module.exports = app;
