@@ -499,5 +499,15 @@
         mxUtils.linkAction(node, 'Actual', editor, 'actualSize');
         mxUtils.write(node, ', ');
         mxUtils.linkAction(node, 'Fit', editor, 'fit');
+        
+        
+        
+        //------------------load model dynamically
+        var xmlString = '<mxGraphModel><root><Diagram label="My Diagram" href="http://www.jgraph.com/" id="0"><mxCell/></Diagram><Layer label="Default Layer" id="1"><mxCell parent="0"/></Layer><Begin label="Begin" href="" id="2"><mxCell vertex="1" parent="1"><mxGeometry x="130" y="20" width="80" height="40" as="geometry"/></mxCell></Begin></root></mxGraphModel>';
+
+
+        var doc = mxUtils.parseXml(xmlString);
+        var codec = new mxCodec(doc);
+        codec.decode(doc.documentElement, editor.graph.getModel());
     }
 }
