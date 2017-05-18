@@ -9,7 +9,7 @@
 		<separator/>
 		<add as="delete" action="delete" icon="/node_modules/mxgraph/javascript/examples/editors/images/delete.gif" if="cell"/>
 		<separator/>
-		<add as="microserviceProperties" action="setProperties" icon="/node_modules/mxgraph/javascript/examples/editors/images/delete.gif" if="cell"/>
+		<add as="Microservice Properties" action="setProperties" icon="/node_modules/mxgraph/javascript/examples/editors/images/delete.gif" if="cell"/>
 		
 		<!--<add as="exitGroup" action="exitGroup" icon="/node_modules/mxgraph/javascript/examples/editors/images/up.gif" if="notRoot"/>-->
 		<!--<add as="enterGroup" action="enterGroup" icon="/node_modules/mxgraph/javascript/examples/editors/images/down.gif" if="validRoot"/>-->

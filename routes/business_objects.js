@@ -9,16 +9,15 @@ router.post('/', function(req, res, next) {
 
     // Get our form values. These rely on the "name" attributes
     var userName = req.body.username;
-    var bObjs = req.body.business_objects;
+    var bObjs = req.body.b_objs;
     
     // Set our collection
     var collection = db.get('business_objects');
     
     // Submit to the DB
-    collection.insert({
-        "username" : userName,
-        "b_objs" : bObjs
-    }, function (err, doc) {
+    collection.update({
+        "username" : userName
+    },{"b_objs":bObjs,"username":userName},{upsert:true}, function (err, doc) {
         if (err) {
             // If it failed, return error
             res.status(500).send('Could not save to mongodb');

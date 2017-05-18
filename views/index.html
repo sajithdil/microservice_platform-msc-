@@ -9,6 +9,8 @@
         <!--<link href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css">-->
         <link href="stylesheets/bootstrap.css" rel="stylesheet">
         <link href="stylesheets/style.css" rel="stylesheet">
+        <link href="node_modules/ng-popup/dist/ngPopup.css" rel="stylesheet"></link>
+        <link href="node_modules/angular-toastr/dist/angular-toastr.css" rel="stylesheet"></link>
         
         <title>Hello, World! example for mxGraph</title>
         <!--<link rel="stylesheet" href="/node_modules/mxgraph/javascript/examples/editors/css/wordpress.css" type="text/css" media="screen" />-->
@@ -19,8 +21,11 @@
         <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="node_modules/angular/angular.js"></script>
-        <script type="text/javascript" src="node_modules/angular-bootstrap/ui-bootstrap.js"></script>
-        
+        <script type="text/javascript" src="node_modules/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script type="text/javascript" src="node_modules/angular-animate/angular-animate.js"></script>
+        <script type="text/javascript" src="node_modules/angular-listview/angular-listview.js"></script>
+        <script type="text/javascript" src="node_modules/ng-popup/dist/ngPopup.js"></script>
+        <script type="text/javascript" src="node_modules/angular-toastr/dist/angular-toastr.js"></script>
         	<script type="text/javascript">
         
                 mxBasePath = '/node_modules/mxgraph/javascript/src';
@@ -49,6 +54,8 @@
 	         <!-- Loads and initializes the library -->
 	      <script type="text/javascript" src="/node_modules/mxgraph/javascript/mxClient.js"></script>
         
+        <script type="text/javascript" src="/javascripts/util/httpService.js"></script>
+        <script type="text/javascript" src="/javascripts/util/apiService.js"></script>
         <script type="text/javascript" src="/javascripts/app.js"></script>
     </head>
     <body ng-app="app" ui-view ng-controller="appController">
@@ -117,13 +124,14 @@
 		</table>
     </div>
     <div class="col-sm-4">
+        
         <table id="propPanel" ng-show="showPropPanel" class="ng-hide">
             <tr>
                 <td>Microservice Properties</td>
             </tr>
-            <ng-include src="template"></ng-include>
+            
         </table>
-        
+        <ng-include src="template"></ng-include>
     </div>
     
   </div>
@@ -152,14 +160,25 @@
 	</div>
 	
 </div>
-</div>
     </body>
 </html>
 
 <script  type="text/ng-template" id="beginTemplate">
     <tr>
         <td>
-            begin variables
+            <h1>Begin Data</h1>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div list-view list="it in bObjs" select-mode="single">
+                <div><a href="#" ng-click="openBuObjForm()" class="btn btn-primary">Add New Business Object</a></div>
+                <div list-item>
+                    <b>{{it.name}}</b>
+                    <p>{{it.type}}</p>
+                </div>
+            </div>
         </td>
     </tr>
 </script>
+

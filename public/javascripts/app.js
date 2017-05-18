@@ -3,9 +3,10 @@
     // your page initialization code here
     // the DOM will be available here
 
-    var app = angular.module("app", [])
-        .controller("appController", ["$scope", "$rootScope",function($scope,$rootScope) {
+    var app = angular.module("app", ['listview','apiService','ngPopup','ngAnimate','toastr','ui.bootstrap','ui.bootstrap.modal'])
+        .controller("appController", ["$scope", "$rootScope",'restApiService','toastr','$modal',function($scope,$rootScope,api,toastr,$modal) {
             console.log("app controller");
+           
 
 
             var editor = null;
@@ -152,8 +153,102 @@
                     console.log("showing prop panel");
                     $scope.showPropPanel = true;
                     $scope.template = "beginTemplate";
+                    
+                    api.getBusinessObjectsByUser('sajith').then(function success(res){
+                        $scope.bObjs = res.data.b_objs;
+                        $scope.bObjData = res.data;
+                    },function fail(err){
+                        console.log(err);
+                    });
                 }
             }
+         
+            
+            $scope.openBuObjForm = function()
+            {
+                var buTypes = [];
+                
+                buTypes.push("string");
+                buTypes.push("integer");
+                buTypes.push("boolean");
+                buTypes.push("float");
+                buTypes.push("double");
+                buTypes.push("complex");
+                buTypes.push("array");
+                
+                for(var i = 0;i<$scope.bObjData.length;i++)
+                {
+                    if($scope.bObjData[i].type == "complex")
+                    {
+                        buTypes.push($scope.bObjData[i].name);
+                    }
+                }
+                
+                $scope.buTypes = buTypes;
+                
+                $scope.params = [];
+                
+                
+                
+                $scope.modalInstance = $modal.open({
+                    templateUrl: '/javascripts/template/addBuObj.tpl.html',
+                    scope:$scope,
+                    resolve: {
+                        bObjData: function () {
+                          return $scope.bObjData;
+                        }
+                      },
+                    controller:function($modalInstance, $scope,bObjData){
+                        //$modalInstance.dismiss('cancel');
+                        
+                        $scope.addParam = function()
+                        {
+                            var p = {};
+                            p.name = $scope.buParamName;
+                            p.type = $scope.buParamType;
+                            $scope.params.push(p);
+                        }
+                        
+                        $scope.saveBuObj = function()
+                        {
+                            var data = {
+                                name: $scope.buName,
+                                type: $scope.buType
+                            };
+                            
+                            if($scope.buType == 'complex')
+                            {
+                                data.params = $scope.params;
+                            }
+                            
+                            if($scope.buType == 'array')
+                            {
+                                data.array_type = $scope.buArrayType;
+                            }
+                            
+                            bObjData.b_objs.push(data);
+                            
+                            api.updateBusinessObj(bObjData).then(function success(res){
+                                
+                                toastr.success("business object saved");
+                                
+                                api.getBusinessObjectsByUser('sajith').then(function success(res){
+                                    $scope.bObjs = res.data.b_objs;
+                                    $scope.bObjData = res.data;
+                                    $modalInstance.dismiss('cancel');
+                                },function fail(err){
+                                    console.log(err);
+                                });
+                            },function fail(err){
+                                console.log(err);
+                            })
+                            
+                        }
+                    }
+                });
+            }
+            
+            
 
         }]);
 
