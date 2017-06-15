@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
+
 router.post('/', function(req, res, next) {
   
   // Set our internal DB variable
@@ -49,6 +49,39 @@ router.get('/', function(req, res, next) {
     });
     console.log(obj);
     
+});
+
+
+
+router.post('/save', function(req, res, next) {
+  
+  // Set our internal DB variable
+    var db = req.db;
+
+    // Get our form values. These rely on the "name" attributes
+    var userName = req.body.username;
+    var projectname = req.body.projectname;
+    var dataflow = req.body.dataflow;
+    
+    // Set our collection
+    var collection = db.get('projects');
+    
+    // Submit to the DB
+    collection.update({
+        "username" : userName,
+        "projectname" : projectname
+    },{"dataflow":dataflow}, function (err, doc) {
+        if (err) {
+            // If it failed, return error
+            res.status(500).send('Could not save to mongodb');
+        }
+        else {
+            // And forward to success page
+            //res.redirect("userlist");
+            res.sendStatus(200);
+        }
+    });
+  //res.send('respond with a resource');
 });
 
 
