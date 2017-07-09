@@ -137,5 +137,32 @@ router.post('/', function(req, res, next) {
     
 });
 
+router.post('/:user/:proj', function(req, res, next) {
+    
+    var projid = req.params.projid;
+    
+    // Set our internal DB variable
+    var db = req.db;
+
+    
+    var db = req.db;
+    
+    // Set our collection
+    var collection = db.get('projects');
+    console.log(collection);
+    var obj = collection.find({"username":req.params.user,"projectname":req.params.proj},function(err,data){
+        if(err)
+        {
+            res.status(500).send(err);
+            return;
+        }
+        
+        //get project
+        var proj = data[0];
+        
+    });
+    
+});
+
 
 module.exports = router;
