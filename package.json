@@ -26,6 +26,7 @@
     "morgan": "~1.7.0",
     "mxgraph": "^3.7.1",
     "ng-bootstrap": "^1.6.3",
+    "ng-material-floating-button": "^0.6.2",
     "ng-popup": "^0.5.0",
     "pug": "~2.0.0-beta10",
     "rxjs": "^5.3.0",

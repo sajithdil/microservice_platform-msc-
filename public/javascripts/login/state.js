@@ -9,7 +9,9 @@ var home = angular.module("mlogin",['ui.router','apiService','ui.bootstrap','toa
 	}])
 	.controller('mLoginCtrl',["$scope", "$rootScope",'restApiService','$modal','$state','toastr',function($scope,$rootScope,api,$modal,$state,toastr){
 	    
-	    if($scope.username=="sajith")
+	    $scope.login = function()
+	    {
+	    	if($scope.username=="sajith")
 	    {
 	        $rootScope.username = "sajith";
 	        $state.transitionTo('mProjectsState');
@@ -22,6 +24,7 @@ var home = angular.module("mlogin",['ui.router','apiService','ui.bootstrap','toa
 	    else
 	    {
 	        toastr.error("failed to login");
+	    }
 	    }
 	    
 	}]);
