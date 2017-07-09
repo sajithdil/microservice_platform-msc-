@@ -10,6 +10,7 @@ var users = require('./routes/users');
 var projects = require('./routes/projects');
 var businessObjs = require('./routes/business_objects');
 var environments = require('./routes/enviroments');
+var deploy = require('./routes/deploy');
 
 var mongo = require('mongodb');
 var monk = require('monk');
@@ -46,6 +47,7 @@ app.use('/users', users);
 app.use('/projects',projects);
 app.use('/business_objects',businessObjs);
 app.use('/envs',environments);
+app.use('/deploy',deploy);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
