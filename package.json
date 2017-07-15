@@ -11,8 +11,8 @@
     "@angular/core": "^4.1.0",
     "@angular/forms": "^4.1.0",
     "@angular/platform-browser": "^4.1.0",
-    "angular": "^1.6.3",
-    "angular-animate": "^1.6.5",
+    "angular": "1.6.4",
+    "angular-animate": "1.6.4",
     "angular-bootstrap": "^0.12.2",
     "angular-deckgrid": "^0.5.0",
     "angular-listview": "^0.1.0",
@@ -24,6 +24,7 @@
     "debug": "~2.6.0",
     "express": "~4.14.1",
     "font-awesome": "^4.7.0",
+    "fs": "0.0.1-security",
     "jquery": "^3.2.1",
     "mongodb": "^2.2.26",
     "monk": "^4.0.0",
@@ -35,6 +36,7 @@
     "pug": "~2.0.0-beta10",
     "rxjs": "^5.3.0",
     "serve-favicon": "~2.3.2",
+    "xmldoc": "^1.1.0",
     "zone.js": "^0.8.9"
   },
   "devDependencies": {

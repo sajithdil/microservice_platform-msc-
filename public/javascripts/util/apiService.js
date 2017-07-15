@@ -6,11 +6,19 @@ apiService.factory("restApiService",['$http','$q','requestService',function($htt
         {
             return request.make("GET","business_objects/"+user,'');
         },
+         getBusinessObjectsByUserAndProject:function(user,project)
+        {
+            return request.make("GET","business_objects/"+user+"/"+project,'');
+        },
         updateBusinessObj:function(data)
         {
             return request.make("POST","business_objects",data);
         },
         getprojectsbyuser:function(username)
+        {
+            return request.make("GET","projects/"+username,'');
+        },
+        getprojectsbyuserandproject:function(username)
         {
             return request.make("GET","projects/"+username,'');
         },

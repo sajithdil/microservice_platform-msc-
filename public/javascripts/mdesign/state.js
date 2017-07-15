@@ -433,9 +433,16 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
                 $scope.showPropPanel = true;
                 $scope.template = "beginTemplate";
 
-                api.getBusinessObjectsByUser('sajith').then(function success(res) {
+                api.getBusinessObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
                     $scope.bObjs = res.data.b_objs;
                     $scope.bObjData = res.data;
+                    if($scope.bObjData == "" || $scope.bObjData == undefined)
+                    {
+                        $scope.bObjData = {};
+                        $scope.bObjData.b_objs = [];
+                        $scope.bObjData.project = $stateParams.project;
+                        $scope.bObjData.username = $stateParams.user;
+                    }
                 }, function fail(err) {
                     console.log(err);
                 });
@@ -472,9 +479,13 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
                 resolve: {
                     bObjData: function() {
                         return $scope.bObjData;
+                    },
+                    projectname:function()
+                    {
+                        return $stateParams.project;
                     }
                 },
-                controller: function($modalInstance, $scope, bObjData) {
+                controller: function($modalInstance, $scope, bObjData,projectname) {
                     //$modalInstance.dismiss('cancel');
 
                     $scope.addParam = function() {
@@ -499,12 +510,14 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
                         }
 
                         bObjData.b_objs.push(data);
+                        bObjData.project = projectname;
+                        bObjData.username = $stateParams.user;
 
                         api.updateBusinessObj(bObjData).then(function success(res) {
 
                             toastr.success("business object saved");
 
-                            api.getBusinessObjectsByUser('sajith').then(function success(res) {
+                            api.getBusinessObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
                                 $scope.bObjs = res.data.b_objs;
                                 $scope.bObjData = res.data;
                                 $modalInstance.dismiss('cancel');
