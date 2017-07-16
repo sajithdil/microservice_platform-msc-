@@ -34,7 +34,16 @@ app.use(express.static(__dirname + '/views'));
 app.use(express.static(__dirname + '/'));
 //Store all JS and CSS in base folder.
 
-var db = monk('localhost:27017/msplatform');
+var db = monk('localhost:27017/msplatform', function(err, db){
+    if(err){
+       console.error("Db is not connected", err.message);
+    }
+    else
+    {
+        console.log("Db is connected");
+    }
+});
+
 
 // Make our db accessible to our router
 app.use(function(req,res,next){
