@@ -95,6 +95,35 @@ var home = angular.module("mprojects",['ui.router','apiService','ui.bootstrap','
                         }
                     }
                 });
-		}
+            
+            $scope.modalInstance.result.then(function (selectedItem) {
+              api.getprojectsbyuser($rootScope.username).then(function success(res){
+			
+									// $scope.photos = res.data
+									// $scope.$apply();
+									
+									 $timeout(function() {
+						    			$scope.photos = res.data;
+						    		}, 0);
+									
+								},function fail(err){
+									console.log(err);
+								});
+            }, function () {
+              api.getprojectsbyuser($rootScope.username).then(function success(res){
+			
+									// $scope.photos = res.data
+									// $scope.$apply();
+									
+									 $timeout(function() {
+						    			$scope.photos = res.data;
+						    		}, 0);
+									
+								},function fail(err){
+									console.log(err);
+								});
+            });
+          };
+		
 	    
 	}]);

@@ -10,6 +10,8 @@ router.post('/', function(req, res, next) {
     // Get our form values. These rely on the "name" attributes
     var name = req.body.name;
     var loc = req.body.loc;
+    var port = req.body.port;
+    var dport = req.body.dport;
     
     // Set our collection
     var collection = db.get('env');
@@ -17,7 +19,9 @@ router.post('/', function(req, res, next) {
     // Submit to the DB
     collection.insert({
         "name" : name,
-        "loc" : loc
+        "loc" : loc,
+        "port":port,
+        "dport":dport
     }, function (err, doc) {
         if (err) {
             // If it failed, return error

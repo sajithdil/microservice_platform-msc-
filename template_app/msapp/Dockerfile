@@ -10,5 +10,5 @@ COPY . /usr/src/app
 # Install app dependencies
 RUN cd /usr/src/app && npm install --force
 
-EXPOSE 3000
+EXPOSE <<port>>
 CMD [ "npm", "start" ]

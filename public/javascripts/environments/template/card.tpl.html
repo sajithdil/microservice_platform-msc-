@@ -9,5 +9,16 @@
 
     <div class="a-card">
         <h1>{{card.name}}</h1>
-         <h6>{{card.loc}}</h6>
+         <div class="row">
+            <div class="col-sm-6">Location</div>
+             <div class="col-sm-6">{{card.loc}}</div>
+        </div>
+        <div class="row">
+        <div class="col-sm-6">Port</div>
+             <div class="col-sm-6">{{card.port}}</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">Docker Port</div>
+             <div class="col-sm-6">{{card.dport}}</div>
+        </div>
     </div>

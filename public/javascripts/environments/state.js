@@ -51,7 +51,9 @@ var home = angular.module("menv",['ui.router','apiService','ui.bootstrap','toast
                         {
                             var data = {
                                 name: $scope.name,
-                                loc: $scope.loc
+                                loc: $scope.loc,
+                                port:$scope.port,
+                                dport:$scope.dport
                             };
                             
                            
@@ -90,6 +92,36 @@ var home = angular.module("menv",['ui.router','apiService','ui.bootstrap','toast
                         }
                     }
                 });
-		}
+            
+            
+            $scope.modalInstance.result.then(function (selectedItem) {
+              api.getEnvs().then(function success(res){
+			
+									// $scope.photos = res.data
+									// $scope.$apply();
+									
+									 $timeout(function() {
+						    			$scope.photos = res.data;
+						    		}, 0);
+									
+								},function fail(err){
+									console.log(err);
+								});
+            }, function () {
+              api.getEnvs().then(function success(res){
+			
+									// $scope.photos = res.data
+									// $scope.$apply();
+									
+									 $timeout(function() {
+						    			$scope.photos = res.data;
+						    		}, 0);
+									
+								},function fail(err){
+									console.log(err);
+								});
+            });
+          };
+		
 	    
 	}]);

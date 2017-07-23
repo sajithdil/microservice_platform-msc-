@@ -16,10 +16,82 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
 
         });
     }])
-    .controller('mdesignCtrl', ["$scope", "$rootScope", 'restApiService', 'toastr', '$modal', '$stateParams', 'restApiService', function($scope, $rootScope, api, toastr, $modal, $stateParams, api) {
+    .controller('mdesignCtrl', ["$scope", "$rootScope", 'restApiService', 'toastr', '$modal', '$stateParams', 'restApiService','$state', '$timeout',function($scope, $rootScope, api, toastr, $modal, $stateParams, api,$state,$timeout) {
 
+        $scope.deployProj = function()
+        {
+            $scope.modalInstance = $modal.open({
+                    templateUrl: '/javascripts/mdesign/template/env.tpl.html',
+                    scope:$scope,
+                    resolve: {
+                        // bObjData: function () {
+                        //   return $scope.bObjData;
+                        // }
+                        username:function()
+                        {
+                        	return $rootScope.username;
+                        },
+                        proj:function()
+                        {
+                            return $stateParams.project;
+                        }
+                      },
+                    controller:function($modalInstance, $scope,username,proj){
+                        //$modalInstance.dismiss('cancel');
+                        
+                        $scope.env = "";
+                        
+                        api.getEnvs().then(function success(res){
+			
+                            // $scope.photos = res.data
+                            // $scope.$apply();
 
+                             $timeout(function() {
+                                $scope.envs = res.data;
+                            }, 0);
 
+                        },function fail(err){
+                            console.log(err);
+                        });
+                        
+                        $scope.dropboxitemselected = function (item) {
+ 
+                            $scope.selectedItem = item;
+                            $scope.env = item;
+                        }
+                        
+                        $scope.deployToserv = function()
+                        {
+                            api.deployToServ(username,proj,$scope.env).then(function succ(res){
+                                toastr.success("successfully deployed project");
+                                
+                                $modalInstance.dismiss('cancel');
+                            },function fail(err){
+                                toastr.error("failed to deploy project");
+                                console.log(err);
+                            })
+                        }
+                      
+                    }
+                });
+            
+            
+            $scope.modalInstance.result.then(function (selectedItem) {
+
+            }, function () {
+
+            });
+        }
+
+        $scope.goToProj = function()
+	    {
+	        $state.transitionTo('mProjectsState');
+	    }
+        
+        $scope.goToEnv = function()
+	    {
+	    	$state.transitionTo('mEnvtate');
+	    }
 
         var editor = null;
 
@@ -368,25 +440,48 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
 
         createEditor('/config/diagrameditor.xml');
 
-        function addToolbarItem(graph, toolbar, prototype, image) {
+        function addToolbarItem(graph, toolbar, prototype, image,name) {
             // Function that is executed when the image is dropped on
             // the graph. The cell argument points to the cell under
             // the mousepointer if there is one.
-            var funct = function(graph, evt, cell, x, y) {
+            var funct = function(graph, evt, cell, x, y,name) {
                 graph.stopEditing(false);
-
+//
                 var vertex = graph.getModel().cloneCell(prototype);
-                vertex.geometry.x = x;
-                vertex.geometry.y = y;
+                var template = editor.templates[prototype.title];
+                
+//                var clone = editor.graph.model.cloneCell(template);
+//                editor.createProperties(clone);
+//                clone.geometry.x = x;
+//                clone.geometry.y = y;
+                
+                var doc = mxUtils.createXmlDocument();
+                var node = doc.createElement(prototype.title)
+                node.setAttribute('label', prototype.title);
+                graph.insertVertex(graph.getDefaultParent(), null, node, x, y, 100, 40);
+                
 
-                graph.addCell(vertex);
-                graph.setSelectionCell(vertex);
+                //graph.addCell(clone);
+                //graph.setSelectionCell(clone);
+                
+//                var parent = graph.getDefaultParent();
+//                
+//                graph.getModel().beginUpdate();
+//				try
+//				{
+//                    graph.insertVertex(parent, null, 'vertexLabelsMovable', x, y, vertex.geometry.width, vertex.geometry.height);
+//                }
+//				finally
+//				{
+//					// Updates the display
+//					graph.getModel().endUpdate();
+//				}
             }
 
             // Creates the image which is used as the drag icon (preview)
             var img = toolbar.addMode(null, image, function(evt, cell) {
                 var pt = this.graph.getPointForEvent(evt);
-                funct(graph, evt, cell, pt.x, pt.y);
+                funct(graph, evt, cell, pt.x, pt.y,name);
             });
 
             // Disables dragging if element is disabled. This is a workaround
@@ -408,23 +503,64 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
 
             return img;
         }
-
-        var addVertex = function(icon, w, h, style) {
-            var vertex = new mxCell(null, new mxGeometry(0, 0, w, h), style);
-            vertex.setVertex(true);
-
-            var img = addToolbarItem(editor.graph, editor.toolbar, vertex, icon);
-            img.enabled = true;
-
-            editor.graph.getSelectionModel().addListener(mxEvent.CHANGE, function() {
-                var tmp = editor.graph.isSelectionEmpty();
-                mxUtils.setOpacity(img, (tmp) ? 100 : 20);
-                img.enabled = tmp;
-            });
-        };
-
-
-        addVertex('/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif', 100, 40, '');
+//
+//        var addVertex = function(icon, w, h, style,title) {
+//            var vertex = new mxCell(null, new mxGeometry(0, 0, w, h), style);
+//            vertex.setVertex(true);
+//            
+//            //vertex.value.tagName=title;
+//            
+//
+//            var img = addToolbarItem(editor.graph, editor.toolbar, vertex, icon);
+//            img.enabled = true;
+//            img.setAttribute('title',title);
+//
+//            editor.graph.getSelectionModel().addListener(mxEvent.CHANGE, function() {
+//                var tmp = editor.graph.isSelectionEmpty();
+//                mxUtils.setOpacity(img, (tmp) ? 100 : 20);
+//                img.enabled = tmp;
+//            });
+//        };
+//
+//
+//        addVertex('/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif', 100, 40, '','testt');
+        
+        api.getServiceRegistry().then(function succ(res){
+            
+            for(var i = 0;i<res.data.length;i++)
+            {
+//                var template = "<"+res.data[i].project+" label=\""+res.data[i].project+"\" href=\"\">\n"+
+//				"<mxCell vertex=\"1\">\n"+	
+//				"	<mxGeometry as=\"geometry\" width=\"80\" height=\"40\"/>\n"+
+//				"</mxCell>\n"+
+//			"</"+res.data[i].project+">"
+                
+                //editor.addTemplate(res.data[i].project,template);
+                
+                var c  = new mxCell(null, new mxGeometry(0, 0, 100, 40), '');
+                c.setVertex(true);
+                c.setAttribute('title',res.data[i].project);
+                c.setAttribute('label',res.data[i].project);
+                c.label = res.data[i].project;
+                c.title = res.data[i].project;
+                
+                editor.addTemplate(res.data[i].project,c);
+                
+                var img = addToolbarItem(editor.graph, editor.toolbar, c, '/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif',res.data[i].project);
+                img.setAttribute('title',res.data[i].project);
+                img.enabled = true;
+                
+                editor.graph.getSelectionModel().addListener(mxEvent.CHANGE, function() {
+                    var tmp = editor.graph.isSelectionEmpty();
+                    mxUtils.setOpacity(img, (tmp) ? 100 : 20);
+                    img.enabled = tmp;
+                });
+            }
+            
+        },function fail(err){
+            console.log("failed to get service registry");
+            console.log(err);
+        })
 
 
         $rootScope.showPropertiesPanel = function(editor, cell) {

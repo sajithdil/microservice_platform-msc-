@@ -12,8 +12,8 @@
         
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">Link</a></li>
+                <li ><a ng-click="goToProj()">Projects </a></li>
+                <li ><a ng-click="goToEnv();">Environments</a></li>
                
               </ul>
             </div>
@@ -76,7 +76,8 @@
   <div class="row">
   	<div class="col-lg-2"><div id="zoomActions"></div>
   	</div>
-  	<div class="col-log-6"><button class="btn btn-primary" ng-click="saveDesign()">Save Design</button></div>
+  	<div class="col-log-3"><button class="btn btn-primary" ng-click="saveDesign()">Save Design</button></div>
+  	<div class="col-log-3"><button class="btn btn-primary" ng-click="deployProj()">Deploy</button></div>
   	<div class="col-sm-4">
   		<span>
 			<input id="source" type="checkbox"/>Source

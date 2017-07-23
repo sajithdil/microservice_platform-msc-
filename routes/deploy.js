@@ -4,10 +4,15 @@ var router = express.Router();
 var exec = require('child_process').exec;
 var cLocCmd = 'pwd';
 var cdCmd = 'cd ';
+//var cpCmd = '/bin/cp -rf template_app/msapp ';
+//var dockerCmd = 'docker build -t sajithdil/testapp template_app/testapp';
+//var dockerStopCmd = 'docker stop $(docker ps -q --filter ancestor=sajithdil/testapp )';
+//var dockerExecCmd = 'docker run -p 49160:3000 -d sajithdil/testapp';
+
 var cpCmd = '/bin/cp -rf template_app/msapp ';
-var dockerCmd = 'docker build -t sajithdil/testapp template_app/testapp';
-var dockerStopCmd = 'docker stop $(docker ps -q --filter ancestor=sajithdil/testapp )';
-var dockerExecCmd = 'docker run -p 49160:3000 -d sajithdil/testapp';
+var dockerCmd = 'docker build -t sajithdil/<<appname>> template_app/<<appname>>';
+var dockerStopCmd = 'docker stop $(docker ps -q --filter ancestor=sajithdil/<<appname>> )';
+var dockerExecCmd = 'docker run -p <<dockerport>>:<<port>> -d sajithdil/<<appname>>';
 
 var fs = require('fs')
 
@@ -141,249 +146,350 @@ router.post('/', function(req, res, next) {
     
 });
 
-router.post('/:user/:proj', function(req, res, next) {
+router.post('/:user/:proj/:env', function(req, res, next) {
     
     var appString = "";
     
-    var projid = req.params.projid;
+    //var projid = req.params.projid;
     
     // Set our internal DB variable
     var db = req.db;
-
     
-    // Set our collection
-    var collection = db.get('projects');
-    console.log(collection);
-    var obj = collection.find({"username":req.params.user,"projectname":req.params.proj},function(err,data){
-        if(err)
+//    var cpCmd = '/bin/cp -rf template_app/<<appname>> ';
+//    var dockerCmd = 'docker build -t sajithdil/<<appname>> template_app/<<appname>>';
+//    var dockerStopCmd = 'docker stop $(docker ps -q --filter ancestor=sajithdil/<<appname>> )';
+//    var dockerExecCmd = 'docker run -p 49160:3000 -d sajithdil/<<appname>>';
+    
+    var projname = req.params.proj;
+    
+    var env = req.params.env;
+    
+    var envColl = db.get('env');
+    //console.log(collection);
+    
+    var envObj = envColl.findOne({"name":env},function(errenv,envdata){
+        if(errenv)
         {
-            console.log("projects find err: ",err);
+            console.log("env find err: ",errenv);
             
-            res.status(500).send(err);
+            res.status(500).send(errenv);
             return;
         }
         
-        //get project
-        var proj = data[0];
+        //cpCmd = cpCmd.replace("<<appname>>",projname);
+        dockerCmd = dockerCmd.replace("<<appname>>",projname);
+        dockerCmd = dockerCmd.replace("<<appname>>",projname);
+        dockerStopCmd = dockerStopCmd.replace("<<appname>>",projname);
+        dockerExecCmd = dockerExecCmd.replace("<<appname>>",projname);
+        dockerExecCmd = dockerExecCmd.replace("<<dockerport>>",envdata.dport);
+        dockerExecCmd = dockerExecCmd.replace("<<port>>",envdata.port);
+
+        //console.log("cpCmd: " +cpCmd);
+        console.log("dockerCmd: " +dockerCmd);
+        console.log("dockerStopCmd: " +dockerCmd);
+        console.log("dockerExecCmd: " +dockerExecCmd);
         
-        console.log('Dataflow: '+ proj.dataflow);
-        var document = new xmldoc.XmlDocument(proj.dataflow);
-        
-        console.log("Doc: " + document);
-        
-        var rootd = document.childNamed("root");
-        
-        var compNode = [];
-        var connNode = [];
-        console.log("chilren length: " + rootd.children.length);
-        for(var i=0;i<rootd.children.length;i++)
-        {
-            console.log("noodeing: " + rootd.children[i]);
-            if(rootd.children[i].name!="Diagram" && rootd.children[i].name!="Layer")
+        // Set our collection
+        var collection = db.get('projects');
+        console.log(collection);
+        var obj = collection.find({"username":req.params.user,"projectname":req.params.proj},function(err,data){
+            if(err)
             {
-                console.log("not diagram: " + rootd.children[i].name);
-                if(rootd.children[i].name!="Connector")
+                console.log("projects find err: ",err);
+
+                res.status(500).send(err);
+                return;
+            }
+
+            //get project
+            var proj = data[0];
+
+            console.log('Dataflow: '+ proj.dataflow);
+            var document = new xmldoc.XmlDocument(proj.dataflow);
+
+            console.log("Doc: " + document);
+
+            var rootd = document.childNamed("root");
+
+            var compNode = [];
+            var connNode = [];
+            console.log("chilren length: " + rootd.children.length);
+            for(var i=0;i<rootd.children.length;i++)
+            {
+                console.log("noodeing: " + rootd.children[i]);
+                if(rootd.children[i].name!="Diagram" && rootd.children[i].name!="Layer")
                 {
-                    compNode.push(rootd.children[i]);
+                    console.log("not diagram: " + rootd.children[i].name);
+                    if(rootd.children[i].name!="Connector")
+                    {
+                        compNode.push(rootd.children[i]);
+                    }
+                    else
+                    {
+                        connNode.push(rootd.children[i]);
+                    }
                 }
                 else
                 {
-                    connNode.push(rootd.children[i]);
+                    console.log("rejeccted node: " + rootd.children[i].name);
                 }
             }
-            else
-            {
-                console.log("rejeccted node: " + rootd.children[i].name);
-            }
-        }
-        
-        console.log("compNode length: " + compNode.length);
-        console.log("connNode length: " + connNode.length);
-        console.log("-----------------------------");
-        var boDb = db.get('business_objects');
-        
-        console.log("req.params.user: " + req.params.user);
-        console.log("req.params.proj: " + req.params.proj);
-        console.log("boDb: " + boDb);
-        boDb.findOne({"username":req.params.user,"project":req.params.proj},function(boObjerr,boObjdata){
-            
-            if(err)
-            {
-                console.log("boObjs err: "+boObjerr);
-                res.status(500).send('boObjerr: ' + boObjerr);
-                
-            }
-            
-            console.log("boObjdata: " +boObjdata);
-            
-            
-            //get begin id
-        
-            var beginid=0;
-            console.log("looking for begin id");
-            for(var i=0;i<compNode.length;i++)
-            {
-                console.log("compNode[i].name: " +compNode[i].name);
-                if(compNode[i].name=="Begin")
+
+            console.log("compNode length: " + compNode.length);
+            console.log("connNode length: " + connNode.length);
+            console.log("-----------------------------");
+            var boDb = db.get('business_objects');
+
+            console.log("req.params.user: " + req.params.user);
+            console.log("req.params.proj: " + req.params.proj);
+            console.log("boDb: " + boDb);
+            boDb.findOne({"username":req.params.user,"project":req.params.proj},function(boObjerr,boObjdata){
+
+                if(err)
                 {
-                    beginid=compNode[i].attr.id;
-                    console.log("beginid: " + beginid);
-                    break;
+                    console.log("boObjs err: "+boObjerr);
+                    res.status(500).send('boObjerr: ' + boObjerr);
+
                 }
-            }
-            
-            var targetAttr = 0;
-            console.log("looking for begin comp")
-            for(var i=0;i<connNode.length;i++)
-            {
-                //console.log("conn source: "+ connNode[i].firstChild.attr.source);
-                var childNode = {};
-                for(var m=0;m<connNode[i].children.length;m++)
+
+                console.log("boObjdata: " +boObjdata);
+
+
+                //get begin id
+
+                var beginid=0;
+                console.log("looking for begin id");
+                for(var i=0;i<compNode.length;i++)
                 {
-                    if(connNode[i].children[m].name=="mxCell")
+                    console.log("compNode[i].name: " +compNode[i].name);
+                    if(compNode[i].name=="Begin")
                     {
-                        childNode = connNode[i].children[m];
+                        beginid=compNode[i].attr.id;
+                        console.log("beginid: " + beginid);
                         break;
                     }
                 }
-                console.log("conn source: " + childNode.attr.source);
-                if(childNode.attr.source == beginid)
+
+                var targetAttr = 0;
+                console.log("looking for begin comp")
+                for(var i=0;i<connNode.length;i++)
                 {
-                    //set begin variables
-                    console.log("found begin");
-                    for(var j=0;j<boObjdata.b_objs.length;j++)
+                    //console.log("conn source: "+ connNode[i].firstChild.attr.source);
+                    var childNode = {};
+                    for(var m=0;m<connNode[i].children.length;m++)
                     {
-                        appString+="var "+boObjdata.b_objs[j].name+" = '';\n";
-                    }
-                    console.log("appString: " +appString);
-                    //set target attr
-                    targetAttr = childNode.attr.target;
-                    console.log("setting target: "+ targetAttr);
-                    break;
-                }
-            }
-            console.log("finding next target");
-            loop1: for(var i=0;i<connNode.length;i++)
-            {
-                console.log("finding target: "+targetAttr);
-                var childNode = {};
-                for(var m=0;m<connNode[i].children.length;m++)
-                {
-                    if(connNode[i].children[m].name=="mxCell")
-                    {
-                        childNode = connNode[i].children[m];
-                        break;
-                    }
-                }
-                console.log("target source: "+childNode.attr.source);
-                if(childNode.attr.source == targetAttr)
-                {
-                    console.log("target matched, looking for component");
-                    console.log("running loop 2");
-                    //console.log("compNode: " + compNode);
-                    loop2:for(var x=0;x<compNode.length;x++)
-                    {
-                        console.log("compNode[x].name: " + compNode[x].name);
-                        if(compNode[x].name!="" && compNode[x].name!=undefined)
+                        if(connNode[i].children[m].name=="mxCell")
                         {
-                            console.log("------------------------");
-                        
-                            console.log("looking comp node: " + compNode[x].attr.id);
-                            //console.log("//////");
-                            if(compNode[x].attr.id==targetAttr)
-                            {
-                                console.log('found matching target');
-                                executingValidationOfComponents(x,targetAttr,compNode);
-                            }
-                            
-                            console.log("///////////////////////////////////////////////////");
+                            childNode = connNode[i].children[m];
+                            break;
                         }
                     }
-                    //set next target
-                    targetAttr = childNode.attr.target;
-                    i=0;
+                    console.log("conn source: " + childNode.attr.source);
+                    if(childNode.attr.source == beginid)
+                    {
+                        //set begin variables
+                        console.log("found begin");
+                        for(var j=0;j<boObjdata.b_objs.length;j++)
+                        {
+                            appString+="var "+boObjdata.b_objs[j].name+" = '';\n";
+                        }
+                        console.log("appString: " +appString);
+                        //set target attr
+                        targetAttr = childNode.attr.target;
+                        console.log("setting target: "+ targetAttr);
+                        break;
+                    }
                 }
-            }
-            
-            console.log("logic creation complete");
-            //app logic creation complete
-            //now building and executing app
-            exec(cpCmd+'template_app/testapp', function(error, stdout, stderr) {
-            // command output is in stdout
-            
-                 if (error !== null) {
-                      console.log('exec error: ' + error);
-                     res.status(500).send('Error executing command: ' + error);
-            
-                }
-                console.log("stdout: " + stdout);
-                //copy complete, add appString   
-                
-                fs.readFile('template_app/testapp/routes/execute.js', 'utf8', function (errf,data) {
-                      if (errf) {
-                        console.log(errf);
-                        res.status(500).send('Error reading file: ' + errf);
-                      }
-                    console.log("data: " + data);
-                      console.log("appString: " + appString);
-                      var result = data.replace(/<<@@logic@@>>/g, appString);
-                    console.log("result: " +result);
-                      fs.writeFile('template_app/testapp/routes/execute.js', result, 'utf8', function (errw) {
-                         if (errf) {
-                            console.log(errw);
-                            res.status(500).send('Error writing file: ' + errw);
-                          }
-                          
-                          exec(dockerStopCmd, function(error, stdout3, stderr) {
-                              if (error !== null) {
-                                  console.log('exec error: ' + error);
-                                  console.log("this failure does not matter");
-                                 //res.status(500).send('Error executing command: ' + error);
+                console.log("finding next target");
+                loop1: for(var i=0;i<connNode.length;i++)
+                {
+                    console.log("finding target: "+targetAttr);
+                    var childNode = {};
+                    for(var m=0;m<connNode[i].children.length;m++)
+                    {
+                        if(connNode[i].children[m].name=="mxCell")
+                        {
+                            childNode = connNode[i].children[m];
+                            break;
+                        }
+                    }
+                    console.log("target source: "+childNode.attr.source);
+                    if(childNode.attr.source == targetAttr)
+                    {
+                        console.log("target matched, looking for component");
+                        console.log("running loop 2");
+                        //console.log("compNode: " + compNode);
+                        loop2:for(var x=0;x<compNode.length;x++)
+                        {
+                            console.log("compNode[x].name: " + compNode[x].name);
+                            if(compNode[x].name!="" && compNode[x].name!=undefined)
+                            {
+                                console.log("------------------------");
 
+                                console.log("looking comp node: " + compNode[x].attr.id);
+                                //console.log("//////");
+                                if(compNode[x].attr.id==targetAttr)
+                                {
+                                    console.log('found matching target');
+                                    executingValidationOfComponents(x,targetAttr,compNode);
                                 }
-                              console.log("stdout3: " + stdout3);
+
+                                console.log("///////////////////////////////////////////////////");
+                            }
+                        }
+                        //set next target
+                        targetAttr = childNode.attr.target;
+                        i=0;
+                    }
+                }
+
+                console.log("logic creation complete");
+                //app logic creation complete
+                //now building and executing app
+                exec(cpCmd+'template_app/'+projname, function(error, stdout, stderr) {
+                // command output is in stdout
+
+                     if (error !== null) {
+                          console.log('exec error: ' + error);
+                         res.status(500).send('Error executing command: ' + error);
+
+                    }
+                    console.log("stdout: " + stdout);
+                    //copy complete, add appString   
+
+                    fs.readFile('template_app/'+projname+'/routes/execute.js', 'utf8', function (errf,data) {
+                            if (errf) {
+                                console.log(errf);
+                                res.status(500).send('Error reading file: ' + errf);
+                            }
+                            console.log("data: " + data);
+                            console.log("appString: " + appString);
+                            var result = data.replace(/<<@@logic@@>>/g, appString);
+                            console.log("result: " +result);
+                            fs.writeFile('template_app/'+projname+'/routes/execute.js', result, 'utf8', function (errw) {
+                                if (errf) {
+                                    console.log(errw);
+                                    res.status(500).send('Error writing file: ' + errw);
+                                }
                               
-                              exec(dockerCmd, function(error, stdout1, stderr) {
-                                // command output is in stdout
-
-                                     if (error !== null) {
-                                          console.log('exec error: ' + error);
-                                         res.status(500).send('Error executing command: ' + error);
-
+                                fs.readFile('template_app/'+projname+'/bin/www', 'utf8', function (errf,wwwdata) {
+                                    if (errf) {
+                                          console.log(errf);
+                                        res.status(500).send('Error reading file: ' + errf);
+                                    }
+                                    //console.log("wwwdata: " + wwwdata);
+                                    var wwwresult = wwwdata.replace(/<<port>>/g, envdata.port);
+                                    console.log("wwwresult: " +wwwresult);
+                                    fs.writeFile('template_app/'+projname+'/bin/www', wwwresult, 'utf8', function (errwww) {
+                                        if (errwww) {
+                                            console.log(errwww);
+                                            res.status(500).send('Error writing file: ' + errw);
                                         }
-                                     console.log("stdout1: " + stdout1);
-                                    //res.status(200).send("OK");
-
-                                exec(dockerExecCmd, function(error, stdout2, stderr) {
-                                    // command output is in stdout
-
-                                         if (error !== null) {
-                                              console.log('exec error: ' + error);
-                                             res.status(500).send('Error executing command: ' + error);
-
+                                        
+                                        
+                                        fs.readFile('template_app/'+projname+'/Dockerfile', 'utf8', function (errdo,ddata) {
+                                            if (errdo) {
+                                                console.log(errdo);
+                                                res.status(500).send('Error reading file: ' + errdo);
                                             }
-                                         console.log("stdout2: " + stdout2);
-                                        res.status(200).send("OK");
+                                            //console.log("ddata: " + ddata);
+                                            var ddresult = ddata.replace(/<<port>>/g, envdata.port);
+                                            console.log("ddresult: " +ddresult);
+                                            fs.writeFile('template_app/'+projname+'/Dockerfile', ddresult, 'utf8', function (errddd) {
+                                                if (errddd) {
+                                                    console.log(errddd);
+                                                    res.status(500).send('Error writing file: ' + errddd);
+                                                }
+
+
+
+                                                exec(dockerStopCmd, function(error, stdout3, stderr) {
+                                                      if (error !== null) {
+                                                          console.log('exec error: ' + error);
+                                                          console.log("this failure does not matter");
+                                                         //res.status(500).send('Error executing command: ' + error);
+
+                                                        }
+                                                      console.log("stdout3: " + stdout3);
+
+                                                      exec(dockerCmd, function(error, stdout1, stderr) {
+                                                        // command output is in stdout
+
+                                                             if (error !== null) {
+                                                                  console.log('exec error: ' + error);
+                                                                 res.status(500).send('Error executing command: ' + error);
+
+                                                                }
+                                                             console.log("stdout1: " + stdout1);
+                                                            //res.status(200).send("OK");
+
+                                                        exec(dockerExecCmd, function(error, stdout2, stderr) {
+                                                            // command output is in stdout
+
+                                                                 if (error !== null) {
+                                                                      console.log('exec error: ' + error);
+                                                                     res.status(500).send('Error executing command: ' + error);
+
+                                                                    }
+                                                                 console.log("stdout2: " + stdout2);
+                                                                //res.status(200).send("OK");
+
+                                                                var serreg = db.get('service_registry');
+
+                                                                // Submit to the DB
+                                                                serreg.update({
+                                                                    "project" : projname,
+                                                                    "env":env
+                                                                },{"project" : projname,
+                                                                    "env":env},{upsert:true}, function (err, doc) {
+                                                                    if (err) {
+                                                                        // If it failed, return error
+                                                                        res.status(500).send('Could not save to mongodb');
+                                                                    }
+                                                                    else {
+                                                                        // And forward to success page
+                                                                        //res.redirect("userlist");
+                                                                        res.sendStatus(200);
+                                                                    }
+                                                                });
+
+                                                        });
+
+                                                    });
+
+                                                });
+
+
+                                            });
+
+
+                                        });
+
+
+
+                                    });
+
 
                                 });
 
+
                             });
-                              
-                          });
-                          
-                    });
+
+                        });
+
+
+
                 });
-                  
+
+            //res.status(200).send('OK');
             });
-            
-            
-            
-            
-            
         });
-        
-        //res.status(200).send('OK');
-    });
+    
+    
+    });    
+
+    
+    
     
 });
 

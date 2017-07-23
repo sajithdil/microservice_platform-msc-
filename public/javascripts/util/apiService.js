@@ -37,7 +37,16 @@ apiService.factory("restApiService",['$http','$q','requestService',function($htt
         saveProj:function(data)
         {
             return request.make("POST","projects/save",data);
+        },
+        deployToServ:function(user,proj,serv)
+        {
+            return request.make("POST","deploy/"+user+"/"+proj+"/"+serv,'');
+        },
+        getServiceRegistry:function()
+        {
+            return request.make("GET","serreg",'');
         }
+        
         
     }
 }]);

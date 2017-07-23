@@ -11,6 +11,7 @@ var projects = require('./routes/projects');
 var businessObjs = require('./routes/business_objects');
 var environments = require('./routes/enviroments');
 var deploy = require('./routes/deploy');
+var ser_reg = require('./routes/service_registry');
 
 var mongo = require('mongodb');
 var monk = require('monk');
@@ -57,6 +58,7 @@ app.use('/projects',projects);
 app.use('/business_objects',businessObjs);
 app.use('/envs',environments);
 app.use('/deploy',deploy);
+app.use('/serreg',ser_reg);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

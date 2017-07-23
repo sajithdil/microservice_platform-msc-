@@ -1,0 +1,10 @@
+db.env.find().pretty();
+
+db.env.deleteMany({});
+
+db.service_registry.find().pretty();
+
+docker images
+
+docker ps
+
