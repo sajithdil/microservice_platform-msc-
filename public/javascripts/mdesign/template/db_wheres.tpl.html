@@ -1,0 +1,39 @@
+<form class="form-horizontal">
+  <fieldset>
+    <legend>Db Column Details</legend>
+    <div class="form-group">
+      <label for="inputName" class="col-lg-2 control-label">Column Name</label>
+      <div class="col-lg-8">
+        <input type="text" class="form-control" id="inputName" placeholder="Name" ng-model="sqlwh.colName">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputType" class="col-lg-2 control-label">Type</label>
+      <div class="col-lg-8">
+        <!--<input type="text" class="form-control" id="inputType" placeholder="Type" ng-model="buType">-->
+        <select class="form-control" id="inputType" placeholder="Type" ng-model="sqlwh.colType">
+          <option ng-repeat="type in buTypes">{{type}}</option>
+          
+        </select>
+      </div>
+    </div>
+    
+    
+    <div class="form-group" >
+      <label for="inputType" class="col-lg-2 control-label">Value</label>
+      <div class="col-lg-8">
+        <select class="form-control" id="inputType" ng-model="sqlwh.valName">
+          <option ng-repeat="type in bNameList">{{type}}</option>
+          
+        </select>
+      </div>
+    </div>
+    
+    
+    <div class="form-group">
+      <div class="col-lg-8 col-lg-offset-2">
+        <button class="btn btn-primary"ng-click="saveWh()">Submit</button>
+      </div>
+    </div>
+  </fieldset>
+</form>

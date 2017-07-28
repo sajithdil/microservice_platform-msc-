@@ -109,8 +109,232 @@
     </tr>
     <tr>
         <td>
-            <div list-view list="it in bObjs" select-mode="single">
-                <div><button ng-click="openBuObjForm()" class="btn btn-primary">Add New Business Object</button></div>
+            <div list-view list="it in bObjs" select-mode="single" style="height: 250px; overflow: scroll;">
+                <div><button ng-click="openBuObjForm()" class="btn btn-primary">Add Data Transfer Object</button></div>
+                <div list-item>
+                    <b>{{it.name}}</b>
+                    <p>{{it.type}}</p>
+                </div>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <div list-view list="it in beginObjs" select-mode="single" style="height: 250px; overflow: scroll;">
+                <div><button ng-click="openBeginObjForm()" class="btn btn-primary">Add Begin Object</button></div>
+                <div list-item>
+                    <b>{{it.name}}</b>
+                    <p>{{it.type}}</p>
+                </div>
+            </div>
+        </td>
+    </tr>
+</script>
+        
+<script  type="text/ng-template" id="scriptTemplate">
+    <tr>
+        <td>
+            <h1>Script Data</h1>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div><button ng-click="saveScript()" class="btn btn-primary">Save</button></div>
+            <textarea ng-model="$parent.scriptText" style="width:400px;height:350px"></textarea>
+        </td>
+    </tr>
+
+    
+</script>
+        
+<script  type="text/ng-template" id="databseTemplate">
+    <tr>
+        <td>
+            <h1>Database Data</h1>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="row">
+                <form class="form-horizontal">
+                  <fieldset>
+                    <legend>Databse Details</legend>
+                    <div class="form-group">
+                      <label for="dbLoc" class="col-lg-2 control-label">DB Location</label>
+                      <div class="col-lg-10">
+                        <input type="text" class="form-control" id="dbLoc" placeholder="loc" ng-model="db.dbLoc">
+                      </div>
+                    </div>
+                      
+                      <div class="form-group">
+                      <label for="dbuser" class="col-lg-2 control-label">DB Username</label>
+                      <div class="col-lg-10">
+                        <input type="text" class="form-control" id="dbuser" placeholder="username" ng-model="db.dbuser">
+                      </div>
+                    </div>
+                      
+                      <div class="form-group">
+                      <label for="dbpass" class="col-lg-2 control-label">DB Password</label>
+                      <div class="col-lg-10">
+                        <input type="text" class="form-control" id="dbpass" placeholder="password" ng-model="db.dbpass">
+                      </div>
+                    </div>
+                   
+                    <div class="form-group">
+                      <label for="tbName" class="col-lg-2 control-label">Table Name</label>
+                      <div class="col-lg-10">
+                        <input type="text" class="form-control" id="tbName" placeholder="name" ng-model="db.tbName">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="select" class="col-lg-2 control-label">SQL Type</label>
+                      <div class="col-lg-10">
+                        <select class="form-control" id="select" ng-model="db.qType">
+                          <option value="INSERT">INSERT</option>
+                          <option value="UPDATE">UPDATE</option>
+                          <option value="QUERY">QUERY</option>
+                          <option value="DELETE">DELETE</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div list-view list="it in db.sqlVals" select-mode="single" style="height: 250px; overflow: scroll;">
+                        <div><button ng-click="openSqlColForm()" class="btn btn-primary">Add SQL Value</button></div>
+                        <div list-item>
+                            <div class="row">
+                                <div class="col-sm-3">{{it.colName}}
+                                </div>
+                                <div class="col-sm-1"> : </div>
+                                <div class="col-sm-3">{{it.valName}}</div>
+                            </div>
+                        </div>
+                    </div>
+                      
+                      <div list-view list="it in db.sqlWhs" select-mode="single" style="height: 250px; overflow: scroll;">
+                        <div><button ng-click="openSqlWhForm()" class="btn btn-primary">Add SQL WHERE</button></div>
+                        <div list-item>
+                            <div class="row">
+                                <div class="col-sm-3">{{it.colName}}
+                                </div>
+                                <div class="col-sm-1"> : </div>
+                                <div class="col-sm-3">{{it.valName}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                      <div class="col-lg-10 col-lg-offset-2">
+                        <button ng-click="saveDb()" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+            </div>
+        </td>
+    </tr>
+
+    
+</script>
+        
+        
+<script  type="text/ng-template" id="restTemplate">
+    <tr>
+        <td>
+            <h1>REST Data</h1>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="row">
+                <form class="form-horizontal">
+                  <fieldset>
+                    <legend>Databse Details</legend>
+                    <div class="form-group">
+                      <label for="dbLoc" class="col-lg-2 control-label">REST Location</label>
+                      <div class="col-lg-10">
+                        <input type="text" class="form-control" id="dbLoc" placeholder="loc" ng-model="rest.loc">
+                      </div>
+                    </div>
+                   
+                    <div class="form-group">
+                      <label for="select" class="col-lg-2 control-label">REST Type</label>
+                      <div class="col-lg-10">
+                        <select class="form-control" id="select" ng-model="rest.rType">
+                          <option value="PUT">PUT</option>
+                          <option value="POST">POST</option>
+                          <option value="GET">GET</option>
+                          <option value="DELETE">DELETE</option>
+                        </select>
+                      </div>
+                    </div>
+                      
+                      <div class="form-group" >
+                          <label for="inputType" class="col-lg-2 control-label">Value</label>
+                          <div class="col-lg-8">
+                            <select class="form-control" id="inputType" ng-model="rest.valName">
+                              <option ng-repeat="type in bNameList">{{type}}</option>
+
+                            </select>
+                          </div>
+                        </div>
+                    
+                    
+                    <div class="form-group">
+                      <div class="col-lg-10 col-lg-offset-2">
+                        <button ng-click="saveRest()" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+            </div>
+        </td>
+    </tr>
+
+    
+</script>
+        
+        
+<script  type="text/ng-template" id="decisionTemplate">
+    <tr>
+        <td>
+            <h1>Decision Data</h1>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="row">
+                <div list-view list="it in decision" select-mode="single" style="height: 250px; overflow: scroll;">
+                        <div><button ng-click="addDecisionPath()" class="btn btn-primary">Add Decision Path</button><button ng-click="saveDecision()" class="btn btn-primary">Save Data</button></div>
+                        <div list-item>
+                            <div class="row">
+                                <div class="col-sm-3">{{it.pathName}}
+                                </div>
+                                <div class="col-sm-1"> : </div>
+                                <div class="col-sm-3">{{it.varName}}</div>
+                                <div class="col-sm-1">{{it.act}}</div>
+                                <div class="col-sm-2">{{it.valType}}</div>
+                                <div class="col-sm-2">{{it.valName}}</div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </td>
+    </tr>
+
+    
+</script>
+
+<script  type="text/ng-template" id="endTemplate">
+    <tr>
+        <td>
+            <h1>End Data</h1>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <div list-view list="it in endObjs" select-mode="single" style="height: 250px; overflow: scroll;">
+                <div><button ng-click="openEndObjForm()" class="btn btn-primary">Add End Object</button></div>
                 <div list-item>
                     <b>{{it.name}}</b>
                     <p>{{it.type}}</p>

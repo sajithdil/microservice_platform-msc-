@@ -12,6 +12,12 @@ var businessObjs = require('./routes/business_objects');
 var environments = require('./routes/enviroments');
 var deploy = require('./routes/deploy');
 var ser_reg = require('./routes/service_registry');
+var sc_h = require('./routes/scripts_handling');
+var db_h = require('./routes/db_handling');
+var rest_h = require('./routes/rest_handling');
+var decision_h = require('./routes/decision_handling');
+var beginObjs = require('./routes/begin_objects');
+var endObjs = require('./routes/end_objects');
 
 var mongo = require('mongodb');
 var monk = require('monk');
@@ -59,6 +65,12 @@ app.use('/business_objects',businessObjs);
 app.use('/envs',environments);
 app.use('/deploy',deploy);
 app.use('/serreg',ser_reg);
+app.use('/sch',sc_h);
+app.use('/dbh',db_h);
+app.use('/resth',rest_h);
+app.use('/dech',decision_h);
+app.use('/begin_objects',beginObjs);
+app.use('/end_objects',endObjs);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

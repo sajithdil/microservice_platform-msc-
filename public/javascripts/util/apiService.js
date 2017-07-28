@@ -45,6 +45,54 @@ apiService.factory("restApiService",['$http','$q','requestService',function($htt
         getServiceRegistry:function()
         {
             return request.make("GET","serreg",'');
+        },
+        addScriptHandling:function(data)
+        {
+            return request.make("POST","sch",data);
+        },
+        getScriptHandling:function(username,proj,id)
+        {
+            return request.make("GET","sch/"+username+"/"+proj+"/"+id,'');
+        },
+        addDbHandling:function(data)
+        {
+            return request.make("POST","dbh",data);
+        },
+        getDbHandling:function(username,proj,id)
+        {
+            return request.make("GET","dbh/"+username+"/"+proj+"/"+id,'');
+        },
+        addRestHandling:function(data)
+        {
+            return request.make("POST","resth",data);
+        },
+        getRestHandling:function(username,proj,id)
+        {
+            return request.make("GET","resth/"+username+"/"+proj+"/"+id,'');
+        },
+        addDecisionHandling:function(data)
+        {
+            return request.make("POST","dech",data);
+        },
+        getDecisionHandling:function(username,proj,id)
+        {
+            return request.make("GET","dech/"+username+"/"+proj+"/"+id,'');
+        },
+        getBeginObjectsByUserAndProject:function(user,project)
+        {
+            return request.make("GET","begin_objects/"+user+"/"+project,'');
+        },
+        updateBeginObj:function(data)
+        {
+            return request.make("POST","begin_objects",data);
+        },
+        getEndObjectsByUserAndProject:function(user,project)
+        {
+            return request.make("GET","end_objects/"+user+"/"+project,'');
+        },
+        updateEndObj:function(data)
+        {
+            return request.make("POST","end_objects",data);
         }
         
         

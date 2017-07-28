@@ -369,7 +369,7 @@
 		<add as="End" template="end" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>
 		<add as="Script" template="script" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>
 		<add as="Decision" template="decision" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>
-		<add as="Switch" template="switch" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>
+<!--		<add as="Switch" template="switch" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>-->
 		<add as="REST" template="rest" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>
 		<add as="Database" template="database" icon="/node_modules/mxgraph/javascript/examples/editors/images/rectangle.gif"/>
 	

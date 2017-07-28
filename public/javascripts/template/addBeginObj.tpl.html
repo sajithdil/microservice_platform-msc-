@@ -1,0 +1,55 @@
+<form class="form-horizontal">
+  <fieldset>
+    <legend>Begin Details</legend>
+    <div class="form-group">
+      <label for="inputName" class="col-lg-2 control-label">Name</label>
+      <div class="col-lg-8">
+        <input type="text" class="form-control" id="inputName" placeholder="Name" ng-model="beginName">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputType" class="col-lg-2 control-label">Type</label>
+      <div class="col-lg-8">
+        <!--<input type="text" class="form-control" id="inputType" placeholder="Type" ng-model="buType">-->
+        <select class="form-control" id="inputType" placeholder="Type" ng-model="beginType">
+          <option ng-repeat="type in beginTypes">{{type}}</option>
+          
+        </select>
+      </div>
+    </div>
+    <div class="form-group" ng-show="beginType == 'complex'">
+      <label for="inputType" class="col-lg-2 control-label">Type</label>
+      <div class="col-lg-8">
+        <!--<input type="text" class="form-control" id="inputType" placeholder="Type" ng-model="buType">-->
+        <input type="text" class="form-control" id="inputName" placeholder="Name" ng-model="beginParamName">
+        <select class="form-control" id="inputType" ng-model="beginParamType">
+          <option ng-repeat="type in beginTypes">{{type}}</option>
+          
+        </select>
+        <button ng-click="addParam();">Add Param</button>
+      </div>
+    </div>
+    
+    <div class="form-group" ng-show="beginType == 'array'">
+      <label for="inputType" class="col-lg-2 control-label">Type</label>
+      <div class="col-lg-8">
+        <select class="form-control" id="inputType" ng-model="beginArrayType">
+          <option ng-repeat="type in beginTypes">{{type}}</option>
+          
+        </select>
+      </div>
+    </div>
+    
+    <div class="form-group" ng-show="beginType == 'complex'">
+      <div>Complex Params</div>
+      <div ng-repeat="param in params">{{param.name}}/{{param.type}}</div>
+      
+      
+    </div>
+    <div class="form-group">
+      <div class="col-lg-8 col-lg-offset-2">
+        <button type="submit" class="btn btn-primary"ng-click="saveBeginObj()">Submit</button>
+      </div>
+    </div>
+  </fieldset>
+</form>

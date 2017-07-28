@@ -1,0 +1,71 @@
+<form class="form-horizontal">
+  <fieldset>
+    <legend>Decision Details</legend>
+    <div class="form-group">
+      <label for="inputName" class="col-lg-2 control-label">Path Name</label>
+      <div class="col-lg-8">
+        <input type="text" class="form-control" id="inputName" placeholder="Name" ng-model="dec.pathName">
+      </div>
+    </div>
+    <div class="form-group" >
+      <label for="inputType" class="col-lg-2 control-label">Variable Name</label>
+      <div class="col-lg-8">
+        <select class="form-control" id="inputType" ng-model="dec.varName">
+          <option ng-repeat="type in bNameList">{{type}}</option>
+          
+        </select>
+      </div>
+    </div>
+    
+    
+    <div class="form-group" >
+      <label for="inputType" class="col-lg-2 control-label">Value</label>
+      <div class="col-lg-8">
+        <select class="form-control" id="inputType" ng-model="dec.act">
+          <option >==</option>
+          <option >!=</option>
+          <option >&#62;</option>
+          <option >&#60;</option>
+          <option >&#62;=</option>
+          <option >&#60;=</option>
+          
+        </select>
+      </div>
+    </div>
+      
+      <div class="form-group" >
+      <label for="inputType" class="col-lg-2 control-label">Value Type</label>
+      <div class="col-lg-8">
+        <select class="form-control" id="inputType" ng-model="dec.valType">
+          <option >Value</option>
+          <option >Variable</option>
+          
+        </select>
+      </div>
+    </div>
+      
+      <div class="form-group" ng-show="dec.valType=='Value'">
+      <label for="inputName" class="col-lg-2 control-label">Value</label>
+      <div class="col-lg-8">
+        <input type="text" class="form-control" id="inputName" placeholder="Name" ng-model="dec.valName">
+      </div>
+    </div>
+      
+      <div class="form-group" ng-show="dec.valType=='Variable'">
+      <label for="inputType" class="col-lg-2 control-label">Variable Name</label>
+      <div class="col-lg-8">
+        <select class="form-control" id="inputType" ng-model="dec.valName">
+          <option ng-repeat="type in bNameList">{{type}}</option>
+          
+        </select>
+      </div>
+    </div>
+    
+    
+    <div class="form-group">
+      <div class="col-lg-8 col-lg-offset-2">
+        <button class="btn btn-primary"ng-click="saveDec()">Submit</button>
+      </div>
+    </div>
+  </fieldset>
+</form>

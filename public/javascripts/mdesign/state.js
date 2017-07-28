@@ -582,7 +582,419 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
                 }, function fail(err) {
                     console.log(err);
                 });
+                
+                $scope.beginObjs = [];
+                $scope.beginObjData = {};
+                $scope.beginObjData.begin_objs = [];
+                api.getBeginObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
+                    $scope.beginObjs = res.data.begin_objs;
+                    $scope.beginObjData = res.data;
+                    if($scope.beginObjData == "" || $scope.beginObjData == undefined)
+                    {
+                        $scope.beginObjData = {};
+                        $scope.beginObjData.begin_objs = [];
+                        $scope.beginObjData.project = $stateParams.project;
+                        $scope.beginObjData.username = $stateParams.user;
+                    }
+                }, function fail(err) {
+                    console.log(err);
+                });
             }
+            else if(cell.value.tagName == "Script")
+            {
+                $timeout(function(){
+                     $scope.$apply(function () {
+                        console.log("showing script panel");
+                        $scope.showPropPanel = true;
+                        $scope.template = "scriptTemplate";
+                         $scope.scriptId = cell.getId();
+                    });
+                },0);
+                
+                api.getScriptHandling($stateParams.user,$stateParams.project,cell.getId()).then(function succ(res){
+                    $scope.scriptText = res.data.script;
+                },function fail(err){
+                    console.log("err");
+                    console.log(err);
+                })
+            }
+            else if(cell.value.tagName == "Database")
+            {
+                $timeout(function(){
+                     $scope.$apply(function () {
+                        console.log("showing script panel");
+                        $scope.showPropPanel = true;
+                        $scope.template = "databseTemplate";
+                         $scope.scriptId = cell.getId();
+                         
+                         $scope.db = {};
+                        $scope.db.sqlVals = [];
+                        $scope.db.sqlWhs = [];
+                        $scope.bNameList = [];
+                    });
+                },0);
+                
+                $scope.db = {};
+                $scope.db.sqlVals = [];
+                $scope.db.sqlWhs = [];
+                $scope.bNameList = [];
+                api.getBusinessObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
+                    $scope.bObjs = res.data.b_objs;
+                    $scope.bObjData = res.data;
+                    if($scope.bObjData == "" || $scope.bObjData == undefined)
+                    {
+                        $scope.bObjData = {};
+                        $scope.bObjData.b_objs = [];
+                        $scope.bObjData.project = $stateParams.project;
+                        $scope.bObjData.username = $stateParams.user;
+                    }
+                    else
+                    {
+                        for(var i=0;i<$scope.bObjData.b_objs.length;i++)
+                        {
+                            $scope.bNameList.push($scope.bObjData.b_objs[i].name);
+                        }
+                    }
+                }, function fail(err) {
+                    console.log(err);
+                });
+                
+                api.getDbHandling($stateParams.user,$stateParams.project,cell.getId()).then(function succ(res){
+                    $scope.db = res.data.db;
+                    if($scope.db == "" || $scope.db == undefined)
+                    {
+                        $scope.db = {};
+                        $scope.db.sqlVals = [];
+                        $scope.db.sqlWhs = [];
+                    }
+                    else
+                    {
+                        
+                        
+                        $scope.db = res.data.db;
+                    }
+                },function fail(err){
+                    console.log("err");
+                    console.log(err);
+                })
+            }
+            else if(cell.value.tagName == "REST")
+            {
+                $timeout(function(){
+                     $scope.$apply(function () {
+                        console.log("showing rest panel");
+                        $scope.showPropPanel = true;
+                        $scope.template = "restTemplate";
+                         $scope.scriptId = cell.getId();
+                    });
+                },0);
+                $scope.rest = {};
+                api.getRestHandling($stateParams.user,$stateParams.project,cell.getId()).then(function succ(res){
+                    $scope.rest = res.data.rest;
+                    
+                    if($scope.rest == "" || $scope.rest == undefined)
+                    {
+                        $scope.rest = {};
+                    }
+                    else
+                    {
+                        $scope.rest = res.data.rest;
+                    }
+                },function fail(err){
+                    console.log("err");
+                    console.log(err);
+                })
+                
+                
+                $scope.bNameList = [];
+                api.getBusinessObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
+                    $scope.bObjs = res.data.b_objs;
+                    $scope.bObjData = res.data;
+                    if($scope.bObjData == "" || $scope.bObjData == undefined)
+                    {
+                        $scope.bObjData = {};
+                        $scope.bObjData.b_objs = [];
+                        $scope.bObjData.project = $stateParams.project;
+                        $scope.bObjData.username = $stateParams.user;
+                    }
+                    else
+                    {
+                        for(var i=0;i<$scope.bObjData.b_objs.length;i++)
+                        {
+                            $scope.bNameList.push($scope.bObjData.b_objs[i].name);
+                        }
+                    }
+                }, function fail(err) {
+                    console.log(err);
+                });
+            }
+            else if(cell.value.tagName == "Decision")
+            {
+                $timeout(function(){
+                     $scope.$apply(function () {
+                        console.log("showing Decision panel");
+                        $scope.showPropPanel = true;
+                        $scope.template = "decisionTemplate";
+                         $scope.scriptId = cell.getId();
+                    });
+                },0);
+                $scope.decision = [];
+                api.getDecisionHandling($stateParams.user,$stateParams.project,cell.getId()).then(function succ(res){
+                    $scope.decision = res.data.decision;
+                    
+                    if($scope.decision == "" || $scope.decision == undefined)
+                    {
+                        $scope.decision = [];
+                    }
+                    else
+                    {
+                        $scope.decision = res.data.decision;
+                    }
+                },function fail(err){
+                    console.log("err");
+                    console.log(err);
+                });
+                
+                $scope.bNameList = [];
+                api.getBusinessObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
+                    $scope.bObjs = res.data.b_objs;
+                    $scope.bObjData = res.data;
+                    if($scope.bObjData == "" || $scope.bObjData == undefined)
+                    {
+                        $scope.bObjData = {};
+                        $scope.bObjData.b_objs = [];
+                        $scope.bObjData.project = $stateParams.project;
+                        $scope.bObjData.username = $stateParams.user;
+                    }
+                    else
+                    {
+                        for(var i=0;i<$scope.bObjData.b_objs.length;i++)
+                        {
+                            $scope.bNameList.push($scope.bObjData.b_objs[i].name);
+                        }
+                    }
+                }, function fail(err) {
+                    console.log(err);
+                });
+            }
+            else if (cell.value.tagName == "End") {
+                console.log("showing prop panel");
+                $scope.showPropPanel = true;
+                $scope.template = "endTemplate";
+
+            
+                
+                $scope.endObjs = [];
+                $scope.endObjData = {};
+                $scope.endObjData.begin_objs = [];
+                api.getEndObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
+                    $scope.endObjs = res.data.end_objs;
+                    $scope.endObjData = res.data;
+                    if($scope.endObjData == "" || $scope.endObjData == undefined)
+                    {
+                        $scope.endObjData = {};
+                        $scope.endObjData.end_objs = [];
+                        $scope.endObjData.project = $stateParams.project;
+                        $scope.endObjData.username = $stateParams.user;
+                    }
+                }, function fail(err) {
+                    console.log(err);
+                });
+            }
+        }
+        
+        $scope.saveScript = function()
+        {
+            var data = {};
+            data.username = $stateParams.user;
+            data.proj = $stateParams.project;
+            data.id = $scope.scriptId;
+            data.script = $scope.scriptText;
+            
+            api.addScriptHandling(data).then(function succ(res){
+                toastr.success("Script Saved");
+            },function err(err){
+                console.log(err);
+                toastr.error("could not save script");
+            })
+        }
+        
+        $scope.saveDb = function()
+        {
+            var data = {};
+            data.username = $stateParams.user;
+            data.proj = $stateParams.project;
+            data.id = $scope.scriptId;
+            data.db = $scope.db;
+            
+            api.addDbHandling(data).then(function succ(res){
+                toastr.success("rest Saved");
+            },function err(err){
+                console.log(err);
+                toastr.error("could not save rest");
+            })
+        }
+        
+        $scope.saveRest = function()
+        {
+            var data = {};
+            data.username = $stateParams.user;
+            data.proj = $stateParams.project;
+            data.id = $scope.scriptId;
+            data.rest = $scope.rest;
+            
+            api.addRestHandling(data).then(function succ(res){
+                toastr.success("rest Saved");
+            },function err(err){
+                console.log(err);
+                toastr.error("could not save rest");
+            })
+        }
+        
+        $scope.saveDecision = function()
+        {
+            var data = {};
+            data.username = $stateParams.user;
+            data.proj = $stateParams.project;
+            data.id = $scope.scriptId;
+            data.decision = $scope.decision;
+            
+            api.addDecisionHandling(data).then(function succ(res){
+                toastr.success("decision Saved");
+            },function err(err){
+                console.log(err);
+                toastr.error("could not save decision");
+            })
+        }
+        
+        $scope.openSqlColForm = function()
+        {
+            var buTypes = [];
+
+            buTypes.push("string");
+            buTypes.push("integer");
+            buTypes.push("boolean");
+            buTypes.push("float");
+            buTypes.push("double");
+
+
+            $scope.buTypes = buTypes;
+            
+            $scope.modalInstance = $modal.open({
+                templateUrl: '/javascripts/mdesign/template/db_vals.tpl.html',
+                scope: $scope,
+                resolve: {
+                    buTypes: function() {
+                        return $scope.buTypes;
+                    },
+                    bNameList: function() {
+                        return $scope.bNameList;
+                    }
+                },
+                controller: function($modalInstance, $scope, buTypes,bNameList) {
+                    //$modalInstance.dismiss('cancel');
+
+                    $scope.buTypes = buTypes;
+                    $scope.bNameList = bNameList;
+                    $scope.sqlval = {};
+                    
+                    //$uibModalInstance.close($ctrl.selected.item);
+                    $scope.saveCol = function()
+                    {
+                        $modalInstance.close($scope.sqlval);
+                    }
+                }
+            });
+            
+            $scope.modalInstance.result.then(function (selectedItem) {
+              $scope.db.sqlVals.push(selectedItem);
+            }, function () {
+              $log.info('modal-component dismissed at: ' + new Date());
+            });
+
+        }
+        
+        $scope.openSqlWhForm = function()
+        {
+            var buTypes = [];
+
+            buTypes.push("string");
+            buTypes.push("integer");
+            buTypes.push("boolean");
+            buTypes.push("float");
+            buTypes.push("double");
+
+
+            $scope.buTypes = buTypes;
+            
+            $scope.modalInstance = $modal.open({
+                templateUrl: '/javascripts/mdesign/template/db_wheres.tpl.html',
+                scope: $scope,
+                resolve: {
+                    buTypes: function() {
+                        return $scope.buTypes;
+                    },
+                    bNameList: function() {
+                        return $scope.bNameList;
+                    }
+                },
+                controller: function($modalInstance, $scope, buTypes,bNameList) {
+                    //$modalInstance.dismiss('cancel');
+
+                    $scope.buTypes = buTypes;
+                    $scope.bNameList = bNameList;
+                    $scope.sqlwh = {};
+                    
+                    //$uibModalInstance.close($ctrl.selected.item);
+                    $scope.saveWh = function()
+                    {
+                        $modalInstance.close($scope.sqlwh);
+                    }
+                }
+            });
+            
+            $scope.modalInstance.result.then(function (selectedItem) {
+              $scope.db.sqlWhs.push(selectedItem);
+            }, function () {
+              $log.info('modal-component dismissed at: ' + new Date());
+            });
+
+        }
+        
+        
+        $scope.addDecisionPath = function()
+        {
+           
+            
+            $scope.modalInstance = $modal.open({
+                templateUrl: '/javascripts/mdesign/template/dPath.tpl.html',
+                scope: $scope,
+                resolve: {
+                    bNameList:function(){
+                        return $scope.bNameList;
+                    }
+                },
+                controller: function($modalInstance, $scope,bNameList) {
+                    //$modalInstance.dismiss('cancel');
+
+                    $scope.dec = {};
+                    
+                    $scope.bNameList = bNameList;
+                    
+                    //$uibModalInstance.close($ctrl.selected.item);
+                    $scope.saveDec = function()
+                    {
+                        $modalInstance.close($scope.dec);
+                    }
+                }
+            });
+            
+            $scope.modalInstance.result.then(function (selectedItem) {
+              $scope.decision.push(selectedItem);
+            }, function () {
+              $log.info('modal-component dismissed at: ' + new Date());
+            });
+
         }
 
 
@@ -669,6 +1081,216 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
             });
         }
 
+        $scope.openBeginObjForm = function() {
+            var beginTypes = [];
+
+            beginTypes.push("string");
+            beginTypes.push("integer");
+            beginTypes.push("boolean");
+            beginTypes.push("float");
+            beginTypes.push("double");
+            beginTypes.push("complex");
+            beginTypes.push("array");
+
+            for (var i = 0; i < $scope.beginObjData.length; i++) {
+                if ($scope.beginObjData[i].type == "complex") {
+                    beginTypes.push($scope.beginObjData[i].name);
+                }
+            }
+
+            $scope.beginTypes = beginTypes;
+
+            $scope.beginparams = [];
+
+
+
+            $scope.modalInstance = $modal.open({
+                templateUrl: '/javascripts/template/addBeginObj.tpl.html',
+                scope: $scope,
+                resolve: {
+                    beginObjData: function() {
+                        return $scope.beginObjData;
+                    },
+                    projectname:function()
+                    {
+                        return $stateParams.project;
+                    }
+                },
+                controller: function($modalInstance, $scope, beginObjData,projectname) {
+                    //$modalInstance.dismiss('cancel');
+
+                    $scope.addParam = function() {
+                        var p = {};
+                        p.name = $scope.beginParamName;
+                        p.type = $scope.beginParamType;
+                        $scope.params.push(p);
+                    }
+
+                    $scope.saveBeginObj = function() {
+                        var data = {
+                            name: $scope.beginName,
+                            type: $scope.beginType
+                        };
+
+                        if ($scope.beginType == 'complex') {
+                            data.params = $scope.params;
+                        }
+
+                        if ($scope.beginType == 'array') {
+                            data.array_type = $scope.beginArrayType;
+                        }
+
+                        beginObjData.begin_objs.push(data);
+                        beginObjData.project = projectname;
+                        beginObjData.username = $stateParams.user;
+
+                        api.updateBeginObj(beginObjData).then(function success(res) {
+
+                            toastr.success("begin object saved");
+
+                            api.getBeginObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
+                                $scope.beginObjs = res.data.begin_objs;
+                                $scope.beginObjData = res.data;
+                                $modalInstance.close();
+                            }, function fail(err) {
+                                console.log(err);
+                            });
+                        }, function fail(err) {
+                            console.log(err);
+                        })
+
+                    }
+                }
+            });
+            
+            
+            $scope.modalInstance.result.then(function (selectedItem) {
+              //$scope.decision.push(selectedItem);
+                
+                api.getBeginObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
+                                $scope.beginObjs = res.data.begin_objs;
+                                $scope.beginObjData = res.data;
+                                $modalInstance.close();
+                            }, function fail(err) {
+                                console.log(err);
+                            });
+            }, function () {
+              //$log.info('modal-component dismissed at: ' + new Date());
+                
+                api.getBeginObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
+                                $scope.beginObjs = res.data.begin_objs;
+                                $scope.beginObjData = res.data;
+                                $modalInstance.close();
+                            }, function fail(err) {
+                                console.log(err);
+                            });
+            });
+        }
+
+        $scope.openEndObjForm = function() {
+            var endTypes = [];
+
+            endTypes.push("string");
+            endTypes.push("integer");
+            endTypes.push("boolean");
+            endTypes.push("float");
+            endTypes.push("double");
+            endTypes.push("complex");
+            endTypes.push("array");
+
+            for (var i = 0; i < $scope.endObjData.length; i++) {
+                if ($scope.endObjData[i].type == "complex") {
+                    beginTypes.push($scope.endObjData[i].name);
+                }
+            }
+
+            $scope.endTypes = endTypes;
+
+            $scope.endparams = [];
+
+
+
+            $scope.modalInstance = $modal.open({
+                templateUrl: '/javascripts/template/addEndObj.tpl.html',
+                scope: $scope,
+                resolve: {
+                    endObjData: function() {
+                        return $scope.endObjData;
+                    },
+                    projectname:function()
+                    {
+                        return $stateParams.project;
+                    }
+                },
+                controller: function($modalInstance, $scope, endObjData,projectname) {
+                    //$modalInstance.dismiss('cancel');
+
+                    $scope.addParam = function() {
+                        var p = {};
+                        p.name = $scope.endParamName;
+                        p.type = $scope.endParamType;
+                        $scope.params.push(p);
+                    }
+
+                    $scope.saveEndObj = function() {
+                        var data = {
+                            name: $scope.endName,
+                            type: $scope.endType
+                        };
+
+                        if ($scope.endType == 'complex') {
+                            data.params = $scope.params;
+                        }
+
+                        if ($scope.endType == 'array') {
+                            data.array_type = $scope.endArrayType;
+                        }
+
+                        endObjData.end_objs.push(data);
+                        endObjData.project = projectname;
+                        endObjData.username = $stateParams.user;
+
+                        api.updateEndObj(endObjData).then(function success(res) {
+
+                            toastr.success("end object saved");
+
+                            api.getEndObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
+                                $scope.endObjs = res.data.end_objs;
+                                $scope.endObjData = res.data;
+                                $modalInstance.close();
+                            }, function fail(err) {
+                                console.log(err);
+                            });
+                        }, function fail(err) {
+                            console.log(err);
+                        })
+
+                    }
+                }
+            });
+            
+            
+            $scope.modalInstance.result.then(function (selectedItem) {
+              //$scope.decision.push(selectedItem);
+                
+                api.getEndObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
+                                $scope.endObjs = res.data.end_objs;
+                                $scope.endObjData = res.data;
+                            }, function fail(err) {
+                                console.log(err);
+                            });
+            }, function () {
+              //$log.info('modal-component dismissed at: ' + new Date());
+                
+                api.getEndObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
+                                $scope.endObjs = res.data.end_objs;
+                                $scope.endObjData = res.data;
+                            }, function fail(err) {
+                                console.log(err);
+                            });
+            });
+        }
+        
         $scope.saveDesign = function() {
             var enc = new mxCodec();
             var node = enc.encode(editor.graph.getModel());
