@@ -6,6 +6,20 @@ db.service_registry.find().pretty();
 
 db.scripts_handling.deleteMany({});
 
+db.begin_objects.find().pretty();
+
+db.begin_objects.deleteMany({});
+db.begin_objects.drop();
+
+
+db.end_objects.find().pretty();
+db.end_handling.find().pretty();
+db.end_handling.deleteMany({});
+
+
+db.projects.find().pretty();
+db.rest_handling.find().pretty();
+
 docker images
 
 docker ps

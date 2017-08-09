@@ -46,6 +46,18 @@
       
       
     </div>
+      
+      <div class="form-group" >
+                          <label for="inputType" class="col-lg-2 control-label">Data Transfer Object Assignment</label>
+                          <div class="col-lg-8">
+                            <select class="form-control" id="inputType" ng-model="valName">
+                              <option ng-repeat="type in bNameList">{{type}}</option>
+
+                            </select>
+                          </div>
+                        </div>
+      
+      
     <div class="form-group">
       <div class="col-lg-8 col-lg-offset-2">
         <button type="submit" class="btn btn-primary"ng-click="saveBeginObj()">Submit</button>

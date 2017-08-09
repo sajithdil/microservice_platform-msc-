@@ -1,7 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+var requestify = require('requestify');
+var mysql      = require('mysql');
+
+<<swagger>>
+
 router.post('/', function(req, res, next) {
     
     <<@@logic@@>>

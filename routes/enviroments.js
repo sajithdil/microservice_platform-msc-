@@ -55,6 +55,25 @@ router.get('/', function(req, res, next) {
     
 });
 
+router.get('/:name', function(req, res, next) {
+    
+    var db = req.db;
+    
+    // Set our collection
+    var collection = db.get('env');
+    console.log(collection);
+    var obj = collection.findOne({"name":req.params.name},function(err,data){
+        if(err)
+        {
+            res.status(500).send(err);
+            return;
+        }
+        res.send(data);
+    });
+    console.log(obj);
+    
+});
+
 
 
 module.exports = router;

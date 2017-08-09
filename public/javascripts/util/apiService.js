@@ -93,6 +93,30 @@ apiService.factory("restApiService",['$http','$q','requestService',function($htt
         updateEndObj:function(data)
         {
             return request.make("POST","end_objects",data);
+        },
+        addEndHandling:function(data)
+        {
+            return request.make("POST","endh",data);
+        },
+        getEndHandling:function(username,proj,id)
+        {
+            return request.make("GET","endh/"+username+"/"+proj+"/"+id,'');
+        },
+        addMscompHandling:function(data)
+        {
+            return request.make("POST","mscomph",data);
+        },
+        getMscompHandling:function(username,proj,id)
+        {
+            return request.make("GET","mscomph/"+username+"/"+proj+"/"+id,'');
+        },
+        getServiceRegistryItem:function(name)
+        {
+            return request.make("GET","serreg/"+name,'');
+        },
+        getEnvironmentByName:function(name)
+        {
+            return request.make("GET","envs/"+name,'');
         }
         
         

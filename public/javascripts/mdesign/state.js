@@ -16,7 +16,7 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
 
         });
     }])
-    .controller('mdesignCtrl', ["$scope", "$rootScope", 'restApiService', 'toastr', '$modal', '$stateParams', 'restApiService','$state', '$timeout',function($scope, $rootScope, api, toastr, $modal, $stateParams, api,$state,$timeout) {
+    .controller('mdesignCtrl', ["$scope", "$rootScope", 'restApiService', 'toastr', '$modal', '$stateParams', 'restApiService','$state', '$timeout','$window','$location',function($scope, $rootScope, api, toastr, $modal, $stateParams, api,$state,$timeout,$window,$location) {
 
         $scope.deployProj = function()
         {
@@ -781,14 +781,14 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
                 console.log("showing prop panel");
                 $scope.showPropPanel = true;
                 $scope.template = "endTemplate";
-
+                $scope.scriptId = cell.getId();
             
-                
-                $scope.endObjs = [];
+                $scope.end = {};
+                $scope.end.endObjs = [];
                 $scope.endObjData = {};
-                $scope.endObjData.begin_objs = [];
+                $scope.endObjData.end_objs = [];
                 api.getEndObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
-                    $scope.endObjs = res.data.end_objs;
+                    $scope.end.endObjs = res.data.end_objs;
                     $scope.endObjData = res.data;
                     if($scope.endObjData == "" || $scope.endObjData == undefined)
                     {
@@ -796,6 +796,96 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
                         $scope.endObjData.end_objs = [];
                         $scope.endObjData.project = $stateParams.project;
                         $scope.endObjData.username = $stateParams.user;
+                    }
+                }, function fail(err) {
+                    console.log(err);
+                });
+                
+                
+                $scope.endVar = {};
+                api.getEndHandling($stateParams.user,$stateParams.project,cell.getId()).then(function succ(res){
+                    $scope.endVar = res.data.endVar;
+                    
+                    if($scope.endVar == "" || $scope.endVar == undefined)
+                    {
+                        $scope.endVar = {};
+                    }
+                    else
+                    {
+                        $scope.endVar = res.data.endVar;
+                    }
+                },function fail(err){
+                    console.log("err");
+                    console.log(err);
+                });
+                
+                
+                
+                $scope.bNameList = [];
+                api.getBusinessObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
+                    $scope.bObjs = res.data.b_objs;
+                    $scope.bObjData = res.data;
+                    if($scope.bObjData == "" || $scope.bObjData == undefined)
+                    {
+                        $scope.bObjData = {};
+                        $scope.bObjData.b_objs = [];
+                        $scope.bObjData.project = $stateParams.project;
+                        $scope.bObjData.username = $stateParams.user;
+                    }
+                    else
+                    {
+                        for(var i=0;i<$scope.bObjData.b_objs.length;i++)
+                        {
+                            $scope.bNameList.push($scope.bObjData.b_objs[i].name);
+                        }
+                    }
+                }, function fail(err) {
+                    console.log(err);
+                });
+            }
+            else
+            {
+                //its a microservice component
+                console.log("showing prop panel");
+                $scope.showPropPanel = true;
+                $scope.template = "msTemplate";
+                $scope.scriptId = cell.getId();
+                $scope.compName = cell.value.localName;
+                
+                $scope.mscomp = {};
+                api.getMscompHandling($stateParams.user,$stateParams.project,cell.getId()).then(function succ(res){
+                    $scope.mscomp = res.data.mscomp;
+                    
+                    if($scope.mscomp == "" || $scope.mscomp == undefined)
+                    {
+                        $scope.mscomp = {};
+                    }
+                    else
+                    {
+                        $scope.mscomp = res.data.mscomp;
+                    }
+                },function fail(err){
+                    console.log("err");
+                    console.log(err);
+                });
+                
+                $scope.bNameList = [];
+                api.getBusinessObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
+                    $scope.bObjs = res.data.b_objs;
+                    $scope.bObjData = res.data;
+                    if($scope.bObjData == "" || $scope.bObjData == undefined)
+                    {
+                        $scope.bObjData = {};
+                        $scope.bObjData.b_objs = [];
+                        $scope.bObjData.project = $stateParams.project;
+                        $scope.bObjData.username = $stateParams.user;
+                    }
+                    else
+                    {
+                        for(var i=0;i<$scope.bObjData.b_objs.length;i++)
+                        {
+                            $scope.bNameList.push($scope.bObjData.b_objs[i].name);
+                        }
                     }
                 }, function fail(err) {
                     console.log(err);
@@ -860,10 +950,27 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
             data.decision = $scope.decision;
             
             api.addDecisionHandling(data).then(function succ(res){
-                toastr.success("decision Saved");
+                toastr.success("Decision Saved");
             },function err(err){
                 console.log(err);
-                toastr.error("could not save decision");
+                toastr.error("could not save Decision");
+            })
+        }
+        
+        $scope.saveMsComp = function()
+        {
+            var data = {};
+            data.username = $stateParams.user;
+            data.proj = $stateParams.project;
+            data.id = $scope.scriptId;
+            data.mscomp = $scope.mscomp;
+            data.msname = $scope.compName;
+            
+            api.addMscompHandling(data).then(function succ(res){
+                toastr.success("Microservice Component Saved");
+            },function err(err){
+                console.log(err);
+                toastr.error("could not save Microservice Component");
             })
         }
         
@@ -996,7 +1103,43 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
             });
 
         }
+        
+        
+        $scope.saveEnd = function()
+        {
+            var data = {};
+            data.username = $stateParams.user;
+            data.proj = $stateParams.project;
+            data.id = $scope.scriptId;
+            data.endVar = $scope.endVar;
+            
+            
+            api.addEndHandling(data).then(function succ(res){
+                toastr.success("End Saved");
+            },function err(err){
+                console.log(err);
+                toastr.error("could not save End");
+            })
+        }
 
+        
+        $scope.viewDocs = function()
+        {
+            api.getServiceRegistryItem($scope.compName).then(function succ(res){
+                api.getEnvironmentByName(res.data.env).then(function succ(envres){
+                    
+                    var url = "http://"+$location.host()+":"+envres.data.port+"/api-docs";
+                    
+                    $window.open(url, '_blank');
+                },function fail(err){
+                    console.log(err);
+                    toastr.error("Could not Get Service Regisry Environment");
+                })
+            },function fail(){
+                console.log(err);
+                toastr.error("Could not Get Service Regisry Item");
+            });
+        }
 
         $scope.openBuObjForm = function() {
             var buTypes = [];
@@ -1008,6 +1151,11 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
             buTypes.push("double");
             buTypes.push("complex");
             buTypes.push("array");
+            
+            if($scope.bObjData == undefined)
+                {
+                    $scope.bObjData= [];
+                }
 
             for (var i = 0; i < $scope.bObjData.length; i++) {
                 if ($scope.bObjData[i].type == "complex") {
@@ -1125,11 +1273,34 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
                         p.type = $scope.beginParamType;
                         $scope.params.push(p);
                     }
+                    
+                    $scope.bNameList = [];
+                    api.getBusinessObjectsByUserAndProject($stateParams.user,$stateParams.project).then(function success(res) {
+                        $scope.bObjs = res.data.b_objs;
+                        $scope.bObjData = res.data;
+                        if($scope.bObjData == "" || $scope.bObjData == undefined)
+                        {
+                            $scope.bObjData = {};
+                            $scope.bObjData.b_objs = [];
+                            $scope.bObjData.project = $stateParams.project;
+                            $scope.bObjData.username = $stateParams.user;
+                        }
+                        else
+                        {
+                            for(var i=0;i<$scope.bObjData.b_objs.length;i++)
+                            {
+                                $scope.bNameList.push($scope.bObjData.b_objs[i].name);
+                            }
+                        }
+                    }, function fail(err) {
+                        console.log(err);
+                    });
 
                     $scope.saveBeginObj = function() {
                         var data = {
                             name: $scope.beginName,
-                            type: $scope.beginType
+                            type: $scope.beginType,
+                            valName: $scope.valName
                         };
 
                         if ($scope.beginType == 'complex') {
@@ -1139,7 +1310,14 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
                         if ($scope.beginType == 'array') {
                             data.array_type = $scope.beginArrayType;
                         }
-
+                        if(beginObjData=="")
+                        {
+                            beginObjData = {};
+                        }
+                        if(beginObjData.begin_objs == undefined)
+                        {
+                            beginObjData.begin_objs = [];
+                        }
                         beginObjData.begin_objs.push(data);
                         beginObjData.project = projectname;
                         beginObjData.username = $stateParams.user;
@@ -1200,7 +1378,7 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
 
             for (var i = 0; i < $scope.endObjData.length; i++) {
                 if ($scope.endObjData[i].type == "complex") {
-                    beginTypes.push($scope.endObjData[i].name);
+                    end.push($scope.endObjData[i].name);
                 }
             }
 
@@ -1249,6 +1427,8 @@ var home = angular.module("mdesign", ['ui.router', 'listview', 'apiService', 'ng
                         endObjData.end_objs.push(data);
                         endObjData.project = projectname;
                         endObjData.username = $stateParams.user;
+                        
+                        
 
                         api.updateEndObj(endObjData).then(function success(res) {
 

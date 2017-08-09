@@ -126,6 +126,7 @@
                 <div list-item>
                     <b>{{it.name}}</b>
                     <p>{{it.type}}</p>
+                    <p>{{it.valName}}</p>
                 </div>
             </div>
         </td>
@@ -164,6 +165,20 @@
                       <label for="dbLoc" class="col-lg-2 control-label">DB Location</label>
                       <div class="col-lg-10">
                         <input type="text" class="form-control" id="dbLoc" placeholder="loc" ng-model="db.dbLoc">
+                      </div>
+                    </div>
+                      
+                      <div class="form-group">
+                      <label for="dbPort" class="col-lg-2 control-label">DB port</label>
+                      <div class="col-lg-10">
+                        <input type="text" class="form-control" id="dbPort" placeholder="Port" ng-model="db.dbPort">
+                      </div>
+                    </div>
+                      
+                      <div class="form-group">
+                      <label for="dbName" class="col-lg-2 control-label">DB Name</label>
+                      <div class="col-lg-10">
+                        <input type="text" class="form-control" id="dbName" placeholder="Name" ng-model="db.dbName">
                       </div>
                     </div>
                       
@@ -221,6 +236,16 @@
                             </div>
                         </div>
                     </div>
+                      
+                      <div class="form-group" >
+                          <label for="inputType" class="col-lg-2 control-label">Value Variable</label>
+                          <div class="col-lg-8">
+                            <select class="form-control" id="inputType" ng-model="db.valName">
+                              <option ng-repeat="type in bNameList">{{type}}</option>
+
+                            </select>
+                          </div>
+                        </div>
                     
                     <div class="form-group">
                       <div class="col-lg-10 col-lg-offset-2">
@@ -272,6 +297,16 @@
                           <label for="inputType" class="col-lg-2 control-label">Value</label>
                           <div class="col-lg-8">
                             <select class="form-control" id="inputType" ng-model="rest.valName">
+                              <option ng-repeat="type in bNameList">{{type}}</option>
+
+                            </select>
+                          </div>
+                        </div>
+                      
+                      <div class="form-group" >
+                          <label for="inputType" class="col-lg-2 control-label">Response Variable</label>
+                          <div class="col-lg-8">
+                            <select class="form-control" id="inputType" ng-model="rest.resVar">
                               <option ng-repeat="type in bNameList">{{type}}</option>
 
                             </select>
@@ -340,6 +375,56 @@
                     <p>{{it.type}}</p>
                 </div>
             </div>
+            
+            <div class="row" >
+                <div class="col-sm-4">
+                          <label for="inputType" class="control-label">Response Variable</label>
+                    </div>
+                          <div class="col-sm-8">
+                            <select class="form-control" id="inputType" ng-model="endVar.end">
+                              <option ng-repeat="type in bNameList">{{type}}</option>
+
+                            </select>
+                          </div>
+                        </div>
+            <div><button ng-click="saveEnd()" class="btn btn-primary">Save Response Variable</button></div>
+        </td>
+    </tr>
+</script>
+
+<script  type="text/ng-template" id="msTemplate">
+    <tr>
+        <td>
+            <h1>Microservice Data</h1>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <div><button ng-click="viewDocs()" class="btn btn-primary">View API Docs</button></div>
+            <div class="row" >
+                <div class="col-sm-4">
+                          <label for="inputType" class="control-label">Input Variable</label>
+                    </div>
+                          <div class="col-sm-8">
+                            <select class="form-control" id="inputType" ng-model="mscomp.inputVar">
+                              <option ng-repeat="type in bNameList">{{type}}</option>
+
+                            </select>
+                          </div>
+                        </div>
+            <div class="row" >
+                <div class="col-sm-4">
+                          <label for="outType" class="control-label">Output Variable</label>
+                    </div>
+                          <div class="col-sm-8">
+                            <select class="form-control" id="outType" ng-model="mscomp.outputVar">
+                              <option ng-repeat="type in bNameList">{{type}}</option>
+
+                            </select>
+                          </div>
+                        </div>
+            <div><button ng-click="saveMsComp()" class="btn btn-primary">Save Data</button></div>
         </td>
     </tr>
 </script>
